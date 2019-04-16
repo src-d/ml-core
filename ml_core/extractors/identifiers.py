@@ -1,0 +1,20 @@
+# TODO (Guillemdb): fix imports
+from ml_core.algorithms.token_parser import NoopTokenParser
+from ml_core.algorithms.uast.uast_ids_to_bag import UastIds2Bag
+from ml_core.extractors.bags_extractor import BagsExtractor
+from ml_core.extractors.helpers import register_extractor
+
+
+@register_extractor
+class IdentifiersBagExtractor(BagsExtractor):
+    NAME = "id"
+    NAMESPACE = "i."
+    OPTS = {"split-stem": True}
+    OPTS.update(BagsExtractor.OPTS)
+
+    def __init__(self, docfreq_threshold=None, split_stem=True, **kwargs):
+        super().__init__(docfreq_threshold, **kwargs)
+        self.id2bag = UastIds2Bag(None, NoopTokenParser() if not split_stem else None)
+
+    def uast_to_bag(self, uast):
+        return self.id2bag(uast)
