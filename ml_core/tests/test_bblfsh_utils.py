@@ -18,8 +18,10 @@ class BblfshUtilsTests(unittest.TestCase):
             cls.docker_client.containers.list()
         except Exception:
             raise Exception("docker not running properly")
-        cls.er_msg = "supported bblfshd versions: " \
-                     ">=%s,<%s" % (BBLFSH_VERSION_LOW, BBLFSH_VERSION_HIGH)
+        cls.er_msg = "supported bblfshd versions: " ">=%s,<%s" % (
+            BBLFSH_VERSION_LOW,
+            BBLFSH_VERSION_HIGH,
+        )
 
     def __check_bblfsh_version_support(self, version: str) -> bool:
         """
@@ -36,10 +38,7 @@ class BblfshUtilsTests(unittest.TestCase):
                         break
 
         container = self.docker_client.containers.run(
-            image="bblfsh/bblfshd:%s" % version,
-            privileged=True,
-            detach=True,
-            ports={"9432": port},
+            image="bblfsh/bblfshd:%s" % version, privileged=True, detach=True, ports={"9432": port}
         )
 
         assert container is not None, "failed to create bblfsh container"
@@ -49,7 +48,7 @@ class BblfshUtilsTests(unittest.TestCase):
                 res = check_version(port=port)
                 break
             except Exception:
-                time.sleep(.1)
+                time.sleep(0.1)
                 pass
 
         container.stop()

@@ -8,6 +8,7 @@ class Id2Vec(Model):
     """
     id2vec model - source code identifier embeddings.
     """
+
     NAME = "id2vec"
     VENDOR = "source{d}"
     DESCRIPTION = "Model that contains information on source code as identifier embeddings."
@@ -21,13 +22,14 @@ class Id2Vec(Model):
         return self
 
     def _load_tree(self, tree):
-        self.construct(embeddings=tree["embeddings"].copy(),
-                       tokens=split_strings(tree["tokens"]))
+        self.construct(embeddings=tree["embeddings"].copy(), tokens=split_strings(tree["tokens"]))
 
     def dump(self):
         return """Shape: %s
 First 10 words: %s""" % (
-            self.embeddings.shape, self.tokens[:10])
+            self.embeddings.shape,
+            self.tokens[:10],
+        )
 
     @property
     def embeddings(self):

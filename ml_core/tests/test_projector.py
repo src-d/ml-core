@@ -48,8 +48,10 @@ class ProjectorTests(unittest.TestCase):
             try:
                 attempts, result = self.wait_for_web_server()
                 self.assertTrue(attempts < self.MAX_ATTEMPTS or result == 0)
-                self.assertEqual(requests.get("http://0.0.0.0:8000/test.txt").text,
-                                 "The Zen of Python, by Tim Peters")
+                self.assertEqual(
+                    requests.get("http://0.0.0.0:8000/test.txt").text,
+                    "The Zen of Python, by Tim Peters",
+                )
             finally:
                 server.stop()
 
@@ -76,9 +78,13 @@ class ProjectorTests(unittest.TestCase):
     def test_present_embeddings(self):
         with tempfile.TemporaryDirectory(prefix="sourced.ml-test-") as tmpdir:
             tmpdir = os.path.join(tmpdir, "1", "2")
-            present_embeddings(tmpdir, False, ["one", "two"],
-                               [(str(i), "x") for i in range(5)],
-                               [(i, i) for i in range(5)])
+            present_embeddings(
+                tmpdir,
+                False,
+                ["one", "two"],
+                [(str(i), "x") for i in range(5)],
+                [(i, i) for i in range(5)],
+            )
             with open(os.path.join(tmpdir, "id2vec.json")) as fin:
                 json.load(fin)
             with open(os.path.join(tmpdir, "id2vec_meta.tsv")) as fin:
@@ -98,9 +104,13 @@ class ProjectorTests(unittest.TestCase):
         try:
             with tempfile.TemporaryDirectory(prefix="sourced.ml-test-") as tmpdir:
                 with captured_output() as (stdout, _, _):
-                    present_embeddings(tmpdir, True, ["one"],
-                                       [str(i) for i in range(5)],
-                                       [(i, i) for i in range(5)])
+                    present_embeddings(
+                        tmpdir,
+                        True,
+                        ["one"],
+                        [str(i) for i in range(5)],
+                        [(i, i) for i in range(5)],
+                    )
                     with open(os.path.join(tmpdir, "id2vec.json")) as fin:
                         json.load(fin)
                     with open(os.path.join(tmpdir, "id2vec_meta.tsv")) as fin:
@@ -109,7 +119,8 @@ class ProjectorTests(unittest.TestCase):
                         self.assertEqual(fin.read(), "0\t0\n1\t1\n2\t2\n3\t3\n4\t4\n")
                 self.assertIn(
                     "\thttp://projector.tensorflow.org/?config=http://0.0.0.0:8000/id2vec.json\n",
-                    stdout.getvalue())
+                    stdout.getvalue(),
+                )
         finally:
             shutil.which = which
             os.environ["BROWSER"] = browser

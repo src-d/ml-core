@@ -70,7 +70,8 @@ def present_embeddings(destdir, run_server, labels, index, embeddings):
         log.info("Wrote %s", dataf)
     jsonf = "id2vec.json"
     with open(jsonf, "w") as fout:
-        fout.write("""{
+        fout.write(
+            """{
   "embeddings": [
     {
       "tensorName": "id2vec",
@@ -80,7 +81,9 @@ def present_embeddings(destdir, run_server, labels, index, embeddings):
     }
   ]
 }
-""" % (len(embeddings), len(embeddings[0]), dataf, metaf))
+"""
+            % (len(embeddings), len(embeddings[0]), dataf, metaf)
+        )
     log.info("Wrote %s", jsonf)
     if run_server and not web_server.running:
         web_server.start()

@@ -40,8 +40,9 @@ class Uast2IdDistance(UastIds2Bag):
                 continue  # We do not want to calculate distance between the same identifiers
             distance = self.distance(point1, point2)
             if distance < self.max_distance:
-                yield ((point1[0], point2[0]) if point1[0] > point2[0] else
-                       (point2[0], point1[0])), distance
+                yield (
+                    (point1[0], point2[0]) if point1[0] > point2[0] else (point2[0], point1[0])
+                ), distance
 
     def distance(self, point1, point2) -> Union[int, float]:
         """
@@ -73,6 +74,7 @@ class Uast2IdTreeDistance(Uast2IdDistance):
 
     __call__ is overridden here and return list instead of bag-of-words (dist).
     """
+
     def _process_uast(self, uast: bblfsh.Node) -> Iterable:
         stack = [(uast, [])]
         while stack:

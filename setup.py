@@ -6,15 +6,14 @@ from setuptools import find_packages, setup
 
 sourcedml = SourceFileLoader("ml_core", "./ml_core/__init__.py").load_module()
 
-with io.open(os.path.join(os.path.dirname(__file__), "README.md"),
-             encoding="utf-8") as f:
+with io.open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
     name="ml-core",
     description="Framework for machine learning on source code. "
-                "Provides API and tools to train and use models based "
-                "on source code features extracted from Babelfish's UASTs.",
+    "Provides API and tools to train and use models based "
+    "on source code features extracted from Babelfish's UASTs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     version=sourcedml.__version__,
@@ -25,11 +24,17 @@ setup(
     download_url="https://github.com/src-d/ml-core",
     packages=find_packages(exclude=("ml_core.tests",)),
     namespace_packages=["ml_core"],
-    entry_points={
-        "console_scripts": ["srcml=ml_core.__main__:main"],
-    },
-    keywords=["machine learning on source code", "word2vec", "id2vec",
-              "github", "swivel", "bow", "bblfsh", "babelfish"],
+    entry_points={"console_scripts": ["srcml=ml_core.__main__:main"]},
+    keywords=[
+        "machine learning on source code",
+        "word2vec",
+        "id2vec",
+        "github",
+        "swivel",
+        "bow",
+        "bblfsh",
+        "babelfish",
+    ],
     install_requires=[
         "PyStemmer>=1.3,<2.0",
         "bblfsh>=2.2.1,<3.0",
@@ -47,8 +52,10 @@ setup(
         "pandas": ["pandas>=0.24.1,<1.0"],
     },
     tests_require=["docker>=3.6.0,<4.0"],
-    package_data={"": ["LICENSE.md", "README.md"],
-                  "sourced": ["ml_core/transformers/languages.yml"], },
+    package_data={
+        "": ["LICENSE.md", "README.md"],
+        "sourced": ["ml_core/transformers/languages.yml"],
+    },
     python_requires=">=3.4",
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -59,6 +66,6 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Topic :: Software Development :: Libraries"
-    ]
+        "Topic :: Software Development :: Libraries",
+    ],
 )

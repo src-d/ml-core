@@ -7,6 +7,7 @@ class TokenParser:
     """
     Common utilities for splitting and stemming tokens.
     """
+
     NAME_BREAKUP_RE = re.compile(r"[^a-zA-Z]+")  #: Regexp to split source code identifiers.
     STEM_THRESHOLD = 6  #: We do not stem split parts shorter than or equal to this size.
     MAX_TOKEN_LENGTH = 256  #: We cut identifiers longer than this value.
@@ -16,8 +17,13 @@ class TokenParser:
     # if True we have only ["sourc", "algorithm"].
     # if you do not want to filter small tokens set min_split_length=1.
 
-    def __init__(self, stem_threshold=STEM_THRESHOLD, max_token_length=MAX_TOKEN_LENGTH,
-                 min_split_length=MIN_SPLIT_LENGTH, single_shot=DEFAULT_SINGLE_SHOT):
+    def __init__(
+        self,
+        stem_threshold=STEM_THRESHOLD,
+        max_token_length=MAX_TOKEN_LENGTH,
+        min_split_length=MIN_SPLIT_LENGTH,
+        single_shot=DEFAULT_SINGLE_SHOT,
+    ):
         self._stemmer = Stemmer.Stemmer("english")
         self._stemmer.maxCacheSize = 0
         self._stem_threshold = stem_threshold
@@ -74,7 +80,7 @@ class TokenParser:
         return self._stemmer.stemWord(word)
 
     def split(self, token):
-        token = token.strip()[:self.max_token_length]
+        token = token.strip()[: self.max_token_length]
 
         def ret(name):
             r = name.lower()
@@ -88,6 +94,7 @@ class TokenParser:
                 ret.prev_p = r
                 yield ret.last_subtoken + r
                 ret.last_subtoken = ""
+
         ret.prev_p = ""
         ret.last_subtoken = ""
 

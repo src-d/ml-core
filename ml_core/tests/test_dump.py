@@ -45,7 +45,8 @@ Shape: (1000, 300)
 First 10 words: ['get', 'name', 'type', 'string', 'class', 'set', 'data', 'value', 'self', 'test']
 """
 
-    DOCFREQ_DUMP = """{'created_at': '2017-08-09 16:49:12', \
+    DOCFREQ_DUMP = (
+        """{'created_at': '2017-08-09 16:49:12', \
 'dependencies': [], \
 'license': 'ODbL-1.0', \
 'model': 'docfreq', \
@@ -55,7 +56,9 @@ First 10 words: ['get', 'name', 'type', 'string', 'class', 'set', 'data', 'value
 'vendor': 'source{d}', \
 'version': [0, 1, 0]}
 Number of words: 982
-""" + "Random 10 words: "
+"""
+        + "Random 10 words: "
+    )
 
     BOW_DUMP = """{'created_at': '2018-01-18 21:59:59', \
 'dependencies': [{'created_at': datetime.datetime(2018, 1, 18, 21, 59, 48, 828287), \
@@ -75,7 +78,8 @@ Shape: (5, 20)
 First 10 documents: ['repo1', 'repo2', 'repo3', 'repo4', 'repo5']
 First 10 tokens: ['i.', 'i.*', 'i.Activity', 'i.AdapterView', 'i.ArrayAdapter', 'i.Arrays', 'i.Bundle', 'i.EditText', 'i.Exception', 'i.False']\n"""  # noqa
 
-    COOCC_DUMP = """{'created_at': '2018-01-24 16:00:02', \
+    COOCC_DUMP = (
+        """{'created_at': '2018-01-24 16:00:02', \
 'dependencies': [{'created_at': datetime.datetime(2018, 1, 24, 15, 59, 24, 129470), \
 'dependencies': [], \
 'model': 'docfreq', \
@@ -89,10 +93,11 @@ First 10 tokens: ['i.', 'i.*', 'i.Activity', 'i.AdapterView', 'i.ArrayAdapter', 
 'vendor': 'source{d}', \
 'version': [1, 0, 0]}
 Number of words: 304
-First 10 words: ['i.set', 'i.iter', 'i.error', 'i.logsdir', 'i.read', 'i.captur', 'i.clear',""" + \
-                 """ 'i.android', 'i.tohome', 'i.ljust']
+First 10 words: ['i.set', 'i.iter', 'i.error', 'i.logsdir', 'i.read', 'i.captur', 'i.clear',"""
+        + """ 'i.android', 'i.tohome', 'i.ljust']
 Matrix: shape: (304, 304) non-zero: 16001
 """
+    )
 
     def tearDown(self):
         if os.path.exists(cache_dir):
@@ -106,9 +111,9 @@ Matrix: shape: (304, 304) non-zero: 16001
     def test_docfreq(self):
         with captured_output() as (out, _, _):
             dump_model(self._get_args(input=paths.DOCFREQ))
-        self.assertEqual(out.getvalue()[:len(self.DOCFREQ_DUMP)], self.DOCFREQ_DUMP)
+        self.assertEqual(out.getvalue()[: len(self.DOCFREQ_DUMP)], self.DOCFREQ_DUMP)
         ending = "\nNumber of documents: 1000\n"
-        self.assertEqual(out.getvalue()[-len(ending):], ending)
+        self.assertEqual(out.getvalue()[-len(ending) :], ending)
 
     def test_bow(self):
         with captured_output() as (out, _, _):
@@ -122,9 +127,17 @@ Matrix: shape: (304, 304) non-zero: 16001
 
     @staticmethod
     def _get_args(input):
-        return argparse.Namespace(input=input, backend=None, args=None, username="",
-                                  password="", index_repo="https://github.com/src-d/models",
-                                  cache=cache_dir, signoff=False, log_level="WARNING")
+        return argparse.Namespace(
+            input=input,
+            backend=None,
+            args=None,
+            username="",
+            password="",
+            index_repo="https://github.com/src-d/models",
+            cache=cache_dir,
+            signoff=False,
+            log_level="WARNING",
+        )
 
 
 if __name__ == "__main__":

@@ -11,8 +11,21 @@ class CooccurrencesTests(unittest.TestCase):
     def test_tokens(self):
         tokens = self.model.tokens
         self.assertIsInstance(tokens, list)
-        self.assertEqual(tokens[:10], ["i.set", "i.iter", "i.error", "i.logsdir", "i.read",
-                                       "i.captur", "i.clear", "i.android", "i.tohome", "i.ljust"])
+        self.assertEqual(
+            tokens[:10],
+            [
+                "i.set",
+                "i.iter",
+                "i.error",
+                "i.logsdir",
+                "i.read",
+                "i.captur",
+                "i.clear",
+                "i.android",
+                "i.tohome",
+                "i.ljust",
+            ],
+        )
         self.assertEqual(len(tokens), 304)
 
     def test_matrix(self):

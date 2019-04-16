@@ -11,6 +11,7 @@ class MergeBOW(Model2Base):
     """
     Merges several :class:`BOW` models together.
     """
+
     MODEL_FROM_CLASS = BOW
     MODEL_TO_CLASS = BOW
 
@@ -22,8 +23,9 @@ class MergeBOW(Model2Base):
         self.deps = None
         self.features_namespaces = None
         if features:
-            self.features_namespaces = [ex.NAMESPACE for ex in extractors.__extractors__.values()
-                                        if ex.NAME in features]
+            self.features_namespaces = [
+                ex.NAMESPACE for ex in extractors.__extractors__.values() if ex.NAME in features
+            ]
 
     def convert_model(self, model: BOW) -> None:
         if self.tokens is None:
@@ -47,9 +49,9 @@ class MergeBOW(Model2Base):
         self._log.info("Writing model ...")
         if self.features_namespaces:
             self._reduce_matrix()
-        BOW(log_level=self._log.level) \
-            .construct(self.documents, self.tokens, self.matrix) \
-            .save(output=self._save_path(index, destdir), series="id2vec", deps=self.deps)
+        BOW(log_level=self._log.level).construct(self.documents, self.tokens, self.matrix).save(
+            output=self._save_path(index, destdir), series="id2vec", deps=self.deps
+        )
 
     def _reduce_matrix(self):
         reduced_tokens = []

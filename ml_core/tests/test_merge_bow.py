@@ -11,17 +11,21 @@ from ml_core.models.model_converters.merge_bow import MergeBOW
 
 class MergeBOWTests(unittest.TestCase):
     def setUp(self):
-        self.model1 = BOW() \
-            .construct(["doc_1", "doc_2", "doc_3"], ["f.tok_1", "k.tok_2", "f.tok_3"],
-                       csc_matrix((numpy.array([1, 2]),
-                                  (numpy.array([0, 1]), numpy.array([1, 0]))),
-                                  shape=(3, 3)))
+        self.model1 = BOW().construct(
+            ["doc_1", "doc_2", "doc_3"],
+            ["f.tok_1", "k.tok_2", "f.tok_3"],
+            csc_matrix(
+                (numpy.array([1, 2]), (numpy.array([0, 1]), numpy.array([1, 0]))), shape=(3, 3)
+            ),
+        )
         self.model1._meta = {"dependencies": [{"model": "docfreq", "uuid": "uuid"}]}
-        self.model2 = BOW() \
-            .construct(["doc_4", "doc_5", "doc_6"], ["f.tok_1", "k.tok_2", "f.tok_3"],
-                       csc_matrix((numpy.array([3, 4]),
-                                  (numpy.array([0, 1]), numpy.array([1, 0]))),
-                                  shape=(3, 3)))
+        self.model2 = BOW().construct(
+            ["doc_4", "doc_5", "doc_6"],
+            ["f.tok_1", "k.tok_2", "f.tok_3"],
+            csc_matrix(
+                (numpy.array([3, 4]), (numpy.array([0, 1]), numpy.array([1, 0]))), shape=(3, 3)
+            ),
+        )
         self.model2._meta = {"dependencies": [{"model": "docfreq", "uuid": "uuid"}]}
         self.merge_results = [[0, 1, 0], [2, 0, 0], [0, 0, 0], [0, 3, 0], [4, 0, 0], [0, 0, 0]]
         self.merge_bow = MergeBOW()
@@ -34,8 +38,9 @@ class MergeBOWTests(unittest.TestCase):
             self.assertListEqual(list(row), self.merge_results[i])
         self.assertEqual(self.merge_bow.deps, [{"uuid": "uuid", "model": "docfreq"}])
         self.merge_bow.convert_model(self.model2)
-        self.assertListEqual(self.merge_bow.documents,
-                             ["doc_1", "doc_2", "doc_3", "doc_4", "doc_5", "doc_6"])
+        self.assertListEqual(
+            self.merge_bow.documents, ["doc_1", "doc_2", "doc_3", "doc_4", "doc_5", "doc_6"]
+        )
         self.assertListEqual(self.merge_bow.tokens, ["f.tok_1", "k.tok_2", "f.tok_3"])
         for i, arr in enumerate(self.merge_bow.matrix):
             for j, row in enumerate(arr.toarray()):
@@ -58,8 +63,9 @@ class MergeBOWTests(unittest.TestCase):
             dest = os.path.join(tmpdir, "bow.asdf")
             self.merge_bow.finalize(0, dest)
             bow = BOW().load(dest)
-            self.assertListEqual(bow.documents,
-                                 ["doc_1", "doc_2", "doc_3", "doc_4", "doc_5", "doc_6"])
+            self.assertListEqual(
+                bow.documents, ["doc_1", "doc_2", "doc_3", "doc_4", "doc_5", "doc_6"]
+            )
             self.assertListEqual(bow.tokens, ["f.tok_1", "k.tok_2", "f.tok_3"])
             for i, row in enumerate(bow.matrix.toarray()):
                 self.assertListEqual(list(row), self.merge_results[i])

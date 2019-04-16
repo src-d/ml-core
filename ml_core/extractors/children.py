@@ -3,7 +3,11 @@ from typing import Iterable, Tuple
 
 from ml_core.algorithms import Uast2QuantizedChildren
 from ml_core.extractors import (
-    BagsExtractor, filter_kwargs, get_names_from_kwargs, register_extractor)
+    BagsExtractor,
+    filter_kwargs,
+    get_names_from_kwargs,
+    register_extractor,
+)
 
 
 @register_extractor
@@ -11,6 +15,7 @@ class ChildrenBagExtractor(BagsExtractor):
     """
     Converts a UAST to the bag of pairs (internal type, quantized number of children).
     """
+
     NAME = "children"
     NAMESPACE = "c."
     OPTS = dict(get_names_from_kwargs(Uast2QuantizedChildren.__init__))

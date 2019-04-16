@@ -22,6 +22,7 @@ class Uast2RandomWalk2BagTest(unittest.TestCase):
 
         def structure(tree):
             from collections import Counter
+
             return set(Counter(len(node.children) for node in tree))
 
         self.assertEqual(structure(starting_nodes_old), structure(starting_nodes))
@@ -37,8 +38,9 @@ class Uast2RandomWalk2BagTest(unittest.TestCase):
         starting_nodes.append(node)
 
         for ch in root.children:
-            node.children.append(self._prepare_starting_nodes(
-                ch, parent=node, starting_nodes=starting_nodes))
+            node.children.append(
+                self._prepare_starting_nodes(ch, parent=node, starting_nodes=starting_nodes)
+            )
 
 
 class UastSeq2BagTest(unittest.TestCase):

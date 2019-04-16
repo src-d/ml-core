@@ -45,7 +45,7 @@ class UastSeq2Bag(Uast2StructBagBase):
 
         for seq_len in self._seq_lens:
             for i in range(0, len(node_sequence) - seq_len + 1, self._stride):
-                key = self.SEP.join(node_sequence[i:i + seq_len])
+                key = self.SEP.join(node_sequence[i : i + seq_len])
                 bag[key] += 1
         return bag
 
@@ -70,8 +70,15 @@ class Uast2RandomWalks:
     Generation of random walks for UAST.
     """
 
-    def __init__(self, p_explore_neighborhood, q_leave_neighborhood, n_walks, n_steps,
-                 node2index=None, seed=None):
+    def __init__(
+        self,
+        p_explore_neighborhood,
+        q_leave_neighborhood,
+        n_walks,
+        n_steps,
+        node2index=None,
+        seed=None,
+    ):
         """
         Related article: https://arxiv.org/abs/1607.00653
 
@@ -152,8 +159,8 @@ class Uast2RandomWalks:
                 return last_node
             return random.choice(last_node.children)
 
-        threshold = (1 / self.p_explore_neighborhood)
-        threshold /= (threshold + len(last_node.children) / self.q_leave_neighborhood)
+        threshold = 1 / self.p_explore_neighborhood
+        threshold /= threshold + len(last_node.children) / self.q_leave_neighborhood
 
         if random.random() <= threshold:
             # With threshold probability we need to return back to previous node.
@@ -163,12 +170,24 @@ class Uast2RandomWalks:
 
 
 class UastRandomWalk2Bag(Uast2StructBagBase):
-    def __init__(self, p_explore_neighborhood=0.79, q_leave_neighborhood=0.82, n_walks=2,
-                 n_steps=10, stride=1, seq_len=(2, 3), seed=42):
+    def __init__(
+        self,
+        p_explore_neighborhood=0.79,
+        q_leave_neighborhood=0.82,
+        n_walks=2,
+        n_steps=10,
+        stride=1,
+        seq_len=(2, 3),
+        seed=42,
+    ):
         super().__init__(stride, seq_len)
-        self.uast2walks = Uast2RandomWalks(p_explore_neighborhood=p_explore_neighborhood,
-                                           q_leave_neighborhood=q_leave_neighborhood,
-                                           n_walks=n_walks, n_steps=n_steps, seed=seed)
+        self.uast2walks = Uast2RandomWalks(
+            p_explore_neighborhood=p_explore_neighborhood,
+            q_leave_neighborhood=q_leave_neighborhood,
+            n_walks=n_walks,
+            n_steps=n_steps,
+            seed=seed,
+        )
 
     def __call__(self, uast):
         bag = defaultdict(int)
@@ -176,5 +195,5 @@ class UastRandomWalk2Bag(Uast2StructBagBase):
             for seq_len in self._seq_lens:
                 for i in range(0, len(walk) - seq_len + 1, self._stride):
                     # convert to str - requirement from wmhash.BagsExtractor
-                    bag[self.SEP.join(walk[i:i + seq_len])] += 1
+                    bag[self.SEP.join(walk[i : i + seq_len])] += 1
         return bag

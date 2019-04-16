@@ -13,11 +13,16 @@ class Model2Base(PickleableLogger):
     """
     Base class for model -> model conversions.
     """
+
     MODEL_FROM_CLASS = None
     MODEL_TO_CLASS = None
 
-    def __init__(self, num_processes: int = 0,
-                 log_level: int = logging.DEBUG, overwrite_existing: bool = True):
+    def __init__(
+        self,
+        num_processes: int = 0,
+        log_level: int = logging.DEBUG,
+        overwrite_existing: bool = True,
+    ):
         """
         Initializes a new instance of Model2Base class.
 
@@ -44,9 +49,12 @@ class Model2Base(PickleableLogger):
             return 0
         queue_in = multiprocessing.Manager().Queue()
         queue_out = multiprocessing.Manager().Queue(1)
-        processes = [multiprocessing.Process(target=self._process_entry,
-                                             args=(i, destdir, queue_in, queue_out))
-                     for i in range(self.num_processes)]
+        processes = [
+            multiprocessing.Process(
+                target=self._process_entry, args=(i, destdir, queue_in, queue_out)
+            )
+            for i in range(self.num_processes)
+        ]
         for p in processes:
             p.start()
         for f in files:
@@ -92,7 +100,9 @@ class Model2Base(PickleableLogger):
                     if self.overwrite_existing:
                         self._log.warning(
                             "Model %s already exists, but will be overwrite. If you want to "
-                            "skip existing models use --disable-overwrite flag", model_path)
+                            "skip existing models use --disable-overwrite flag",
+                            model_path,
+                        )
                     else:
                         self._log.warning("Model %s already exists, skipping.", model_path)
                         queue_out.put((filepath, True))

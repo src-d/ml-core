@@ -1,7 +1,13 @@
 from typing import Union
 
-from modelforge import assemble_sparse_matrix, disassemble_sparse_matrix, merge_strings, \
-    Model, register_model, split_strings
+from modelforge import (
+    assemble_sparse_matrix,
+    disassemble_sparse_matrix,
+    merge_strings,
+    Model,
+    register_model,
+    split_strings,
+)
 
 from ml_core.models.license import DEFAULT_LICENSE
 
@@ -41,26 +47,33 @@ class Topics(Model):
         return self
 
     def _load_tree(self, tree: dict) -> None:
-        self.construct(split_strings(tree["tokens"]),
-                       split_strings(tree["topics"]) if tree["topics"] else None,
-                       assemble_sparse_matrix(tree["matrix"]))
+        self.construct(
+            split_strings(tree["tokens"]),
+            split_strings(tree["topics"]) if tree["topics"] else None,
+            assemble_sparse_matrix(tree["matrix"]),
+        )
 
     def dump(self) -> str:
         res = "%d topics, %d tokens\nFirst 10 tokens: %s\nTopics: " % (
-            self.matrix.shape + (self.tokens[:10],))
+            self.matrix.shape + (self.tokens[:10],)
+        )
         if self.topics is not None:
             res += "labeled, first 10: %s\n" % self.topics[:10]
         else:
             res += "unlabeled\n"
         nnz = self.matrix.getnnz()
         res += "non-zero elements: %d  (%f)" % (
-            nnz, nnz / (self.matrix.shape[0] * self.matrix.shape[1]))
+            nnz,
+            nnz / (self.matrix.shape[0] * self.matrix.shape[1]),
+        )
         return res
 
     def _generate_tree(self):
-        return {"tokens": merge_strings(self.tokens),
-                "topics": merge_strings(self.topics) if self.topics is not None else False,
-                "matrix": disassemble_sparse_matrix(self.matrix)}
+        return {
+            "tokens": merge_strings(self.tokens),
+            "topics": merge_strings(self.topics) if self.topics is not None else False,
+            "matrix": disassemble_sparse_matrix(self.matrix),
+        }
 
     def __len__(self):
         """

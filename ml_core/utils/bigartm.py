@@ -44,15 +44,17 @@ def install_bigartm(args=None, target="./bigartm", tempdir=None):
         return 2
     with tempfile.TemporaryDirectory(prefix="bigartm-", dir=tempdir) as tmpdir:
         log.info("Building bigartm/bigartm in %s...", tmpdir)
-        execute("git clone --single-branch --depth=1 https://github.com/bigartm/bigartm .",
-                tmpdir, log)
+        execute(
+            "git clone --single-branch --depth=1 https://github.com/bigartm/bigartm .", tmpdir, log
+        )
         cwd = os.path.join(tmpdir, "build")
         os.mkdir(cwd)
-        execute("cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DPYTHON=python3 ..",
-                cwd, log)
+        execute(
+            "cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DPYTHON=python3 ..", cwd, log
+        )
         execute("make -j%d" % multiprocessing.cpu_count(), cwd, log)
         whl_path = glob.glob(os.path.join(tmpdir, "build/python/*.whl"))[0]
-        execute("pip3 install \"%s\"" % whl_path, cwd, log)
+        execute('pip3 install "%s"' % whl_path, cwd, log)
         shutil.copyfile(os.path.join(cwd, "bin", "bigartm"), target)
         os.chmod(target, 0o777)
     log.info("Installed %s", os.path.abspath(target))

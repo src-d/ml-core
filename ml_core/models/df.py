@@ -8,12 +8,14 @@ from ml_core.models.license import DEFAULT_LICENSE
 
 # TODO(guillemdb) method ordering. prop, dunder, public, protected, private
 
+
 @register_model
 class DocumentFrequencies(Model):
     """
     Document frequencies - number of times a source code identifier appeared
     in different repositories. Each repository counts only once.
     """
+
     NAME = "docfreq"
     VENDOR = "source{d}"
     DESCRIPTION = "Model that contains document frequencies of features extracted from code."
@@ -60,7 +62,10 @@ class DocumentFrequencies(Model):
         return """Number of words: %d
 Random 10 words: %s
 Number of documents: %d""" % (
-            len(self._df), dict(islice(self._df.items(), 10)), self.docs)
+            len(self._df),
+            dict(islice(self._df.items(), 10)),
+            self.docs,
+        )
 
     @property
     def docs(self) -> int:
@@ -110,7 +115,7 @@ Number of documents: %d""" % (
         pruned._docs = self.docs
         freqs = numpy.fromiter(self._df.values(), dtype=numpy.int32, count=len(self))
         keys = numpy.array(list(self._df.keys()), dtype=object)
-        chosen = numpy.argpartition(freqs, len(freqs) - max_size)[len(freqs) - max_size:]
+        chosen = numpy.argpartition(freqs, len(freqs) - max_size)[len(freqs) - max_size :]
         border_freq = freqs[chosen].min()
         chosen = freqs >= border_freq
         # argpartition can leave some of the elements with freq == border_freq outside
@@ -125,7 +130,7 @@ Number of documents: %d""" % (
             border_freq_indexes = freqs == border_freq
             border_keys = keys[border_freq_indexes]
             border_keys.sort()
-            border_keys = border_keys[:max_size - freqs.shape[0]]
+            border_keys = border_keys[: max_size - freqs.shape[0]]
             df = dict(zip(keys[~border_freq_indexes], freqs[~border_freq_indexes]))
             df.update({key: border_freq for key in border_keys})
         else:

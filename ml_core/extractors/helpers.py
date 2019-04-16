@@ -17,7 +17,8 @@ def register_extractor(cls):
 def get_names_from_kwargs(func):
     for k, v in inspect.signature(func).parameters.items():
         if v.default != inspect.Parameter.empty and isinstance(
-                v.default, (str, int, float, tuple)):
+            v.default, (str, int, float, tuple)
+        ):
             yield k.replace("_", "-"), v.default
 
 
@@ -27,6 +28,11 @@ def filter_kwargs(kwargs, func):
 
 
 def create_extractors_from_args(args: argparse.Namespace) -> List[BagsExtractor]:
-    return [__extractors__[s](args.min_docfreq, log_level=args.log_level,
-                              **__extractors__[s].get_kwargs_fromcmdline(args))
-            for s in args.feature]
+    return [
+        __extractors__[s](
+            args.min_docfreq,
+            log_level=args.log_level,
+            **__extractors__[s].get_kwargs_fromcmdline(args)
+        )
+        for s in args.feature
+    ]

@@ -1,6 +1,10 @@
 from ml_core.algorithms.uast.uast_inttypes_to_graphlets import Uast2GraphletBag
-from ml_core.extractors import \
-    (BagsExtractor, filter_kwargs, get_names_from_kwargs, register_extractor)
+from ml_core.extractors import (
+    BagsExtractor,
+    filter_kwargs,
+    get_names_from_kwargs,
+    register_extractor,
+)
 
 
 @register_extractor

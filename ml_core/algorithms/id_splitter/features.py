@@ -7,8 +7,14 @@ from modelforge.progress_bar import progress_bar
 import numpy
 
 
-def read_identifiers(csv_path: str, use_header: bool, max_identifier_len: int, identifier_col: int,
-                     split_identifier_col: int, shuffle: bool = True) -> List[str]:
+def read_identifiers(
+    csv_path: str,
+    use_header: bool,
+    max_identifier_len: int,
+    identifier_col: int,
+    split_identifier_col: int,
+    shuffle: bool = True,
+) -> List[str]:
     """
     Reads and filters too long identifiers in the CSV file.
 
@@ -41,9 +47,16 @@ def read_identifiers(csv_path: str, use_header: bool, max_identifier_len: int, i
     return identifiers
 
 
-def prepare_features(csv_path: str, use_header: bool, max_identifier_len: int,
-                     identifier_col: int, split_identifier_col: int, test_ratio: float,
-                     padding: str, shuffle: bool = True) -> Tuple[numpy.ndarray]:
+def prepare_features(
+    csv_path: str,
+    use_header: bool,
+    max_identifier_len: int,
+    identifier_col: int,
+    split_identifier_col: int,
+    test_ratio: float,
+    padding: str,
+    shuffle: bool = True,
+) -> Tuple[numpy.ndarray]:
     """
     Prepare the features to train the identifier splitting task.
 
@@ -60,17 +73,24 @@ def prepare_features(csv_path: str, use_header: bool, max_identifier_len: int,
     :return: training and testing features to train the neural net for the splitting task.
     """
     from keras.preprocessing.sequence import pad_sequences
+
     log = logging.getLogger("prepare_features")
 
     # read data from the input file
-    identifiers = read_identifiers(csv_path=csv_path, use_header=use_header,
-                                   max_identifier_len=max_identifier_len,
-                                   identifier_col=identifier_col,
-                                   split_identifier_col=split_identifier_col, shuffle=shuffle)
+    identifiers = read_identifiers(
+        csv_path=csv_path,
+        use_header=use_header,
+        max_identifier_len=max_identifier_len,
+        identifier_col=identifier_col,
+        split_identifier_col=split_identifier_col,
+        shuffle=shuffle,
+    )
 
     log.info("Converting identifiers to character indices")
-    log.info("Number of identifiers: %d, Average length: %d characters" %
-             (len(identifiers), numpy.mean([len(i) for i in identifiers])))
+    log.info(
+        "Number of identifiers: %d, Average length: %d characters"
+        % (len(identifiers), numpy.mean([len(i) for i in identifiers]))
+    )
 
     char2ind = {c: i + 1 for i, c in enumerate(sorted(string.ascii_lowercase))}
 
@@ -97,9 +117,13 @@ def prepare_features(csv_path: str, use_header: bool, max_identifier_len: int,
         char_id_seq.append(index_arr)
         splits.append(split_arr)
 
-    log.info("Number of subtokens: %d, Number of distinct characters: %d" %
-             (sum(sum(split_arr) for split_arr in splits) + len(identifiers),
-              len({i for index_arr in char_id_seq for i in index_arr})))
+    log.info(
+        "Number of subtokens: %d, Number of distinct characters: %d"
+        % (
+            sum(sum(split_arr) for split_arr in splits) + len(identifiers),
+            len({i for index_arr in char_id_seq for i in index_arr}),
+        )
+    )
 
     log.info("Train/test splitting...")
     n_train = int((1 - test_ratio) * len(char_id_seq))
@@ -107,8 +131,9 @@ def prepare_features(csv_path: str, use_header: bool, max_identifier_len: int,
     X_test = char_id_seq[n_train:]
     y_train = splits[:n_train]
     y_test = splits[n_train:]
-    log.info("Number of train samples: %s, number of test samples: %s" % (len(X_train),
-                                                                          len(X_test)))
+    log.info(
+        "Number of train samples: %s, number of test samples: %s" % (len(X_train), len(X_test))
+    )
     log.info("Padding the sequences...")
     X_train = pad_sequences(X_train, maxlen=max_identifier_len, padding=padding)
     X_test = pad_sequences(X_test, maxlen=max_identifier_len, padding=padding)

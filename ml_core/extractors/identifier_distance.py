@@ -2,7 +2,11 @@ from typing import Iterable, Tuple
 
 import bblfsh
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast. uast_id_distance import Uast2IdDistance, Uast2IdLineDistance, Uast2IdTreeDistance
+from ml_core.algorithms.uast.uast_id_distance import (
+    Uast2IdDistance,
+    Uast2IdLineDistance,
+    Uast2IdTreeDistance,
+)
 from ml_core.extractors.bags_extractor import BagsExtractor
 
 
@@ -18,6 +22,7 @@ class IdentifierDistance(BagsExtractor):
     TODO(zurk): Split BagsExtractor into two clases: Extractor and BagsExtractor(Extractor),
     re-inherit this class from Extractor, delete explanations from docstring.
     """
+
     NAMESPACE = ""
     NAME = "Identifier distance"
     OPTS = {}
@@ -40,8 +45,8 @@ class IdentifierDistance(BagsExtractor):
         super().__init__(**kwargs)
         Uast2IdDistance = self.DistanceType.resolve(type)
         self.uast2id_distance = Uast2IdDistance(
-            token_parser=NoopTokenParser() if not split_stem else None,
-            max_distance=max_distance)
+            token_parser=NoopTokenParser() if not split_stem else None, max_distance=max_distance
+        )
 
     def extract(self, uast: bblfsh.Node) -> Iterable[Tuple[str, str, int]]:
         yield from self.uast2id_distance(uast)

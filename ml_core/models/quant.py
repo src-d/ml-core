@@ -13,6 +13,7 @@ class QuantizationLevels(Model):
     Every feature "class" (type, possible distinct value) corresponds to the numpy array
     with integer level borders. The size of each numpy array is (the number of levels + 1).
     """
+
     NAME = "quant"
     VENDOR = "source{d}"
     DESCRIPTION = "Model that contains quantization levels for multiple schemes (feature types)."
@@ -44,14 +45,17 @@ class QuantizationLevels(Model):
             classes = [None for _ in range(len(vals))]
             scheme["levels"] = levels = numpy.zeros(len(vals) * npartitions, dtype=numpy.int32)
             for i, pair in enumerate(vals.items()):
-                classes[i], levels[i * npartitions:(i + 1) * npartitions] = pair
+                classes[i], levels[i * npartitions : (i + 1) * npartitions] = pair
             scheme["classes"] = merge_strings(classes)
         return tree
 
     def dump(self):
         return """Schemes: %s""" % (
-            sorted((v[0], "%d@%d" % (len(v[1]), len(next(iter(v[1].values()))) - 1))
-                   for v in self.levels.items()))
+            sorted(
+                (v[0], "%d@%d" % (len(v[1]), len(next(iter(v[1].values()))) - 1))
+                for v in self.levels.items()
+            )
+        )
 
     def apply_quantization(self, extractors):
         for extractor in extractors:

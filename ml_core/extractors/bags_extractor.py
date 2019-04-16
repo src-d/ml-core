@@ -9,6 +9,7 @@ class Extractor(PickleableLogger):
     Converts a single UAST via `algorithm` to anything you need.
     It is a wrapper to use in `Uast2Features` Transformer in a pipeline.
     """
+
     NAME = None  # feature scheme name, should be overridden in the derived class.
     ALGORITHM = None  # algorithm class to extract from UAST
     OPTS = {}  # cmdline args which are passed into __init__()
@@ -22,7 +23,7 @@ class Extractor(PickleableLogger):
         result = {}
         for k, v in args.__dict__.items():
             if k.startswith(prefix):
-                result[k[len(prefix):]] = v
+                result[k[len(prefix) :]] = v
         return result
 
     def extract(self, uast: bblfsh.Node):
@@ -34,6 +35,7 @@ class BagsExtractor(Extractor):
     Converts a single UAST into the weighted set (dictionary), where elements are strings
     and the values are floats. The derived classes must implement uast_to_bag().
     """
+
     DEFAULT_DOCFREQ_THRESHOLD = 5
     NAMESPACE = None  # the beginning of each element in the bag
     OPTS = {"weight": 1}  # cmdline args which are passed into __init__()

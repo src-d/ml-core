@@ -1,8 +1,14 @@
 import logging
 from typing import Dict, Iterable, List
 
-from modelforge import assemble_sparse_matrix, disassemble_sparse_matrix, merge_strings, Model, \
-    register_model, split_strings
+from modelforge import (
+    assemble_sparse_matrix,
+    disassemble_sparse_matrix,
+    merge_strings,
+    Model,
+    register_model,
+    split_strings,
+)
 from modelforge.progress_bar import progress_bar
 from scipy import sparse
 
@@ -18,6 +24,7 @@ class BOW(Model):
     Word is source code identifier or its part.
     This model depends on :class:`sourced.ml.models.DocumentFrequencies`.
     """
+
     NAME = "bow"
     VENDOR = "source{d}"
     DESCRIPTION = "Model that contains source code as weighted bag of words."
@@ -69,32 +76,38 @@ class BOW(Model):
 
     def construct(self, documents: List[str], tokens: List[str], matrix: sparse.spmatrix):
         if matrix.shape[0] != len(documents):
-            raise ValueError("matrix shape mismatch, documents %d != %d" % (
-                matrix.shape[0], len(documents)))
+            raise ValueError(
+                "matrix shape mismatch, documents %d != %d" % (matrix.shape[0], len(documents))
+            )
         if matrix.shape[1] != len(tokens):
-            raise ValueError("matrix shape mismatch, tokens %d != %d" % (
-                matrix.shape[1], len(tokens)))
+            raise ValueError(
+                "matrix shape mismatch, tokens %d != %d" % (matrix.shape[1], len(tokens))
+            )
         self._documents = documents
         self._matrix = matrix
         self._tokens = tokens
         return self
 
     def dump(self):
-        return "Shape: %s\n" \
-               "First 10 documents: %s\n" \
-               "First 10 tokens: %s" % \
-               (self._matrix.shape, self._documents[:10], self.tokens[:10])
+        return (
+            "Shape: %s\n"
+            "First 10 documents: %s\n"
+            "First 10 tokens: %s" % (self._matrix.shape, self._documents[:10], self.tokens[:10])
+        )
 
-    def save(self, output: str, series: str, deps: Iterable = tuple(),
-             create_missing_dirs: bool = True):
+    def save(
+        self, output: str, series: str, deps: Iterable = tuple(), create_missing_dirs: bool = True
+    ):
         if not deps:
             try:
                 deps = [self.get_dep(DocumentFrequencies.NAME)]
             except KeyError:
                 raise ValueError(
-                    "You must specify DocumentFrequencies dependency to save BOW.") from None
-        super().save(output=output, series=series, deps=deps,
-                     create_missing_dirs=create_missing_dirs)
+                    "You must specify DocumentFrequencies dependency to save BOW."
+                ) from None
+        super().save(
+            output=output, series=series, deps=deps, create_missing_dirs=create_missing_dirs
+        )
 
     def convert_bow_to_vw(self, output: str):
         log = logging.getLogger("bow2vw")
@@ -118,14 +131,18 @@ class BOW(Model):
         return {r: i for i, r in enumerate(self._documents)}
 
     def _generate_tree(self):
-        return {"documents": merge_strings(self._documents),
-                "matrix": disassemble_sparse_matrix(self._matrix),
-                "tokens": merge_strings(self.tokens)}
+        return {
+            "documents": merge_strings(self._documents),
+            "matrix": disassemble_sparse_matrix(self._matrix),
+            "tokens": merge_strings(self.tokens),
+        }
 
     def _load_tree_kwargs(self, tree: dict):
-        return {"documents": split_strings(tree["documents"]),
-                "matrix": assemble_sparse_matrix(tree["matrix"]),
-                "tokens": split_strings(tree["tokens"])}
+        return {
+            "documents": split_strings(tree["documents"]),
+            "matrix": assemble_sparse_matrix(tree["matrix"]),
+            "tokens": split_strings(tree["tokens"]),
+        }
 
     def _load_tree(self, tree: dict):
         self.construct(**self._load_tree_kwargs(tree))

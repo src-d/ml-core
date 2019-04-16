@@ -32,21 +32,34 @@ class TokenParserTests(unittest.TestCase):
             ("wdSize", ["wd", "size", "wdsize"]),
             ("Glint", ["glint"]),
             ("foo_BAR", ["foo", "bar"]),
-            ("sourced.ml.algorithms.uast_ids_to_bag",
-             ["sourc", "sourcedml", "algorithm", "mlalgorithm",
-              "uast", "ids", "idsto", "bag", "tobag"]),
+            (
+                "sourced.ml.algorithms.uast_ids_to_bag",
+                [
+                    "sourc",
+                    "sourcedml",
+                    "algorithm",
+                    "mlalgorithm",
+                    "uast",
+                    "ids",
+                    "idsto",
+                    "bag",
+                    "tobag",
+                ],
+            ),
             ("WORSTnameYOUcanIMAGINE", ["worst", "name", "you", "can", "imagin"]),
             # Another bad example. Parser failed to parse it correctly
             ("SmallIdsToFoOo", ["small", "ids", "idsto", "fo", "oo"]),
             ("SmallIdFooo", ["small", "smallid", "fooo", "idfooo"]),
-            ("ONE_M0re_.__badId.example", ["one", "onem", "re", "bad", "rebad",
-                                           "badid", "exampl", "idexampl"]),
+            (
+                "ONE_M0re_.__badId.example",
+                ["one", "onem", "re", "bad", "rebad", "badid", "exampl", "idexampl"],
+            ),
             ("never_use_Such__varsableNames", ["never", "use", "such", "varsabl", "name"]),
             ("a.b.c.d", ["a", "b", "c", "d"]),
             ("A.b.Cd.E", ["a", "b", "cd", "e"]),
             ("looong_sh_loooong_sh", ["looong", "looongsh", "loooong", "shloooong", "loooongsh"]),
             ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
-            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"])
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
         ]
 
         for token, correct in tokens:
@@ -77,8 +90,10 @@ class TokenParserTests(unittest.TestCase):
             ("wdSize", ["wd", "size"]),
             ("Glint", ["glint"]),
             ("foo_BAR", ["foo", "bar"]),
-            ("sourced.ml.algorithms.uast_ids_to_bag",
-             ["sourc", "ml", "algorithm", "uast", "ids", "to", "bag"]),
+            (
+                "sourced.ml.algorithms.uast_ids_to_bag",
+                ["sourc", "ml", "algorithm", "uast", "ids", "to", "bag"],
+            ),
             ("WORSTnameYOUcanIMAGINE", ["worst", "name", "you", "can", "imagin"]),
             # Another bad example. Parser failed to parse it correctly
             ("SmallIdsToFoOo", ["small", "ids", "to", "fo", "oo"]),
@@ -89,7 +104,7 @@ class TokenParserTests(unittest.TestCase):
             ("A.b.Cd.E", ["a", "b", "cd", "e"]),
             ("looong_sh_loooong_sh", ["looong", "sh", "loooong", "sh"]),
             ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
-            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"])
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
         ]
 
         for token, correct in tokens:
@@ -111,23 +126,18 @@ class TokenParserTests(unittest.TestCase):
         self.assertEqual(
             list(self.tp.split("print really long line")),
             # 'longli' is expected artifact due to edge effects
-            ["print", "really", "long", "longli"])
+            ["print", "really", "long", "longli"],
+        )
         self.assertEqual(
-            list(self.tp.split("set /for. *&PrintAll")),
-            ["set", "for", "print", "all"])
-        self.assertEqual(
-            list(self.tp.split("JumpDown not Here")),
-            ["jump", "down", "not", "here"])
+            list(self.tp.split("set /for. *&PrintAll")), ["set", "for", "print", "all"]
+        )
+        self.assertEqual(list(self.tp.split("JumpDown not Here")), ["jump", "down", "not", "here"])
 
+        self.assertEqual(list(self.tp.split("a b c d")), ["a", "b", "c", "d"])
         self.assertEqual(
-            list(self.tp.split("a b c d")),
-            ["a", "b", "c", "d"])
-        self.assertEqual(
-            list(self.tp.split("a b long c d")),
-            ["a", "b", "long", "blong", "longc", "d"])
-        self.assertEqual(
-            list(self.tp.split("AbCd")),
-            ["ab", "cd"])
+            list(self.tp.split("a b long c d")), ["a", "b", "long", "blong", "longc", "d"]
+        )
+        self.assertEqual(list(self.tp.split("AbCd")), ["ab", "cd"])
 
     def test_split_single_shot(self):
         self.tp._single_shot = True
@@ -135,16 +145,11 @@ class TokenParserTests(unittest.TestCase):
         self.assertEqual(
             list(self.tp.split("print really long line")),
             # 'longli' is expected artifact due to edge effects
-            ["print", "really", "long", "li"])
-        self.assertEqual(
-            list(self.tp.split("a b c d")),
-            ["a", "b", "c", "d"])
-        self.assertEqual(
-            list(self.tp.split("a b long c d")),
-            ["a", "b", "long", "c", "d"])
-        self.assertEqual(
-            list(self.tp.split("AbCd")),
-            ["ab", "cd"])
+            ["print", "really", "long", "li"],
+        )
+        self.assertEqual(list(self.tp.split("a b c d")), ["a", "b", "c", "d"])
+        self.assertEqual(list(self.tp.split("a b long c d")), ["a", "b", "long", "c", "d"])
+        self.assertEqual(list(self.tp.split("AbCd")), ["ab", "cd"])
 
     def test_stem(self):
         self.assertEqual(self.tp.stem("lol"), "lol")

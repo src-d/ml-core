@@ -22,10 +22,18 @@ class QuantizationLevelsTests(unittest.TestCase):
         self.assertEqual(len(self.model), 1)
 
     def test_write(self):
-        levels = {"xxx": {"a": numpy.array([1, 2, 3]), "b": numpy.array([4, 5, 6]),
-                          "c": numpy.array([7, 8, 9])},
-                  "yyy": {"q": numpy.array([3, 2, 1]), "w": numpy.array([6, 5, 4]),
-                          "e": numpy.array([9, 8, 7])}}
+        levels = {
+            "xxx": {
+                "a": numpy.array([1, 2, 3]),
+                "b": numpy.array([4, 5, 6]),
+                "c": numpy.array([7, 8, 9]),
+            },
+            "yyy": {
+                "q": numpy.array([3, 2, 1]),
+                "w": numpy.array([6, 5, 4]),
+                "e": numpy.array([9, 8, 7]),
+            },
+        }
         buffer = BytesIO()
         QuantizationLevels().construct(levels).save(output=buffer, series="quant")
         buffer.seek(0)

@@ -80,8 +80,7 @@ class Model2BaseTests(unittest.TestCase):
         queue_in = FakeQueue([None, "srcdir/job"])
         queue_out = FakeQueue([])
         with tempfile.TemporaryDirectory(prefix="sourced-ml-") as tmpdir:
-            converter._process_entry(
-                0, os.path.join(tmpdir, "destdir"), queue_in, queue_out)
+            converter._process_entry(0, os.path.join(tmpdir, "destdir"), queue_in, queue_out)
             self.assertTrue(os.path.exists(os.path.join(tmpdir, "destdir")))
             self.assertEqual(ToModel.output, os.path.join(tmpdir, "destdir", "job"))
         self.assertTrue(converter.finalized)

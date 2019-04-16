@@ -1,6 +1,7 @@
 import codecs
 from collections import defaultdict
 import os
+
 # TODO (Guillemdb): fix imports
 from ml_core.algorithms.uast.uast_ids_to_bag import uast2sequence, UastIds2Bag
 from ml_core.extractors.bags_extractor import BagsExtractor
@@ -10,8 +11,9 @@ from ml_core.utils import bblfsh_roles
 
 class HashedTokenParser:
     def process_token(self, token):
-        yield codecs.encode((hash(token) & 0xffffffffffffffff).to_bytes(8, "little"),
-                            "hex_codec").decode()
+        yield codecs.encode(
+            (hash(token) & 0xFFFFFFFFFFFFFFFF).to_bytes(8, "little"), "hex_codec"
+        ).decode()
 
 
 class Literals2Bag(UastIds2Bag):

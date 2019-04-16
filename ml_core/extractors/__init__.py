@@ -1,6 +1,11 @@
 # flake8: noqa
-from ml_core.extractors.helpers import __extractors__, get_names_from_kwargs, \
-    register_extractor, filter_kwargs, create_extractors_from_args
+from ml_core.extractors.helpers import (
+    __extractors__,
+    get_names_from_kwargs,
+    register_extractor,
+    filter_kwargs,
+    create_extractors_from_args,
+)
 from ml_core.extractors.bags_extractor import Extractor, BagsExtractor, RoleIdsExtractor
 from ml_core.extractors.identifiers import IdentifiersBagExtractor
 from ml_core.extractors.literals import LiteralsBagExtractor

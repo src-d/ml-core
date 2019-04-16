@@ -8,10 +8,10 @@ from ml_core.models.model_converters.merge_df import MergeDocFreq
 
 class Model2BaseTests(unittest.TestCase):
     def setUp(self):
-        self.model1 = DocumentFrequencies().construct(3, {"one": 1, "two": 2,  "three": 3})
+        self.model1 = DocumentFrequencies().construct(3, {"one": 1, "two": 2, "three": 3})
         self.model2 = DocumentFrequencies().construct(3, {"four": 4, "three": 3, "five": 5})
         self.merge_df = MergeDocFreq(min_docfreq=1, vocabulary_size=100)
-        self.merge_result = {"one": 1, "two": 2,  "three": 6, "four": 4, "five": 5}
+        self.merge_result = {"one": 1, "two": 2, "three": 6, "four": 4, "five": 5}
 
     def test_convert_model(self):
         self.merge_df.convert_model(self.model1)

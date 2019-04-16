@@ -41,6 +41,7 @@ class IdSplitterTest(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_prepare_features(self):
         from sourced.ml.algorithms.id_splitter.features import prepare_features
+
         # check feature extraction
         text = "a a"
         n_lines = 10
@@ -48,9 +49,16 @@ class IdSplitterTest(unittest.TestCase):
         with tempfile.NamedTemporaryFile() as tmp:
             with tarfile.open(None, "w", fileobj=tmp, encoding="utf-8") as tmp_tar:
                 write_fake_identifiers(tmp_tar, n_lines=n_lines, char_sizes=1, n_cols=2, text=text)
-            feat = prepare_features(csv_path=tmp.name, use_header=True, identifier_col=0,
-                                    max_identifier_len=max_identifier_len, split_identifier_col=1,
-                                    shuffle=True, test_ratio=0.5, padding="post")
+            feat = prepare_features(
+                csv_path=tmp.name,
+                use_header=True,
+                identifier_col=0,
+                max_identifier_len=max_identifier_len,
+                split_identifier_col=1,
+                shuffle=True,
+                test_ratio=0.5,
+                padding="post",
+            )
             x_train, x_test, y_train, y_test = feat
             # because of test_ratio=0.5 - shapes should be equal
             self.assertEqual(x_test.shape, x_train.shape)
@@ -78,22 +86,35 @@ class IdSplitterTest(unittest.TestCase):
 
         # normal file
         try:
-            prepare_features(csv_path=IDENTIFIERS, use_header=True, identifier_col=0,
-                             max_identifier_len=max_identifier_len, split_identifier_col=1,
-                             shuffle=True, test_ratio=0.5, padding="post")
+            prepare_features(
+                csv_path=IDENTIFIERS,
+                use_header=True,
+                identifier_col=0,
+                max_identifier_len=max_identifier_len,
+                split_identifier_col=1,
+                shuffle=True,
+                test_ratio=0.5,
+                padding="post",
+            )
         except Exception as e:
             self.fail("prepare_features raised %s with log %s" % (type(e), str(e)))
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_read_identifiers(self):
         from sourced.ml.algorithms.id_splitter.features import read_identifiers
+
         # read with header
         with tempfile.NamedTemporaryFile() as tmp:
             with tarfile.open(None, "w", fileobj=tmp, encoding="utf-8") as tmp_tar:
                 write_fake_identifiers(tmp_tar, n_lines=10, char_sizes=1, n_cols=5)
 
-            res = read_identifiers(csv_path=tmp.name, use_header=True, max_identifier_len=10,
-                                   identifier_col=3, split_identifier_col=4)
+            res = read_identifiers(
+                csv_path=tmp.name,
+                use_header=True,
+                max_identifier_len=10,
+                identifier_col=3,
+                split_identifier_col=4,
+            )
             self.assertEqual(len(res), 10)
 
         # read without header
@@ -101,8 +122,13 @@ class IdSplitterTest(unittest.TestCase):
             with tarfile.open(None, "w", fileobj=tmp, encoding="utf-8") as tmp_tar:
                 write_fake_identifiers(tmp_tar, n_lines=10, char_sizes=1, n_cols=5)
 
-            res = read_identifiers(csv_path=tmp.name, use_header=False, max_identifier_len=10,
-                                   identifier_col=3, split_identifier_col=4)
+            res = read_identifiers(
+                csv_path=tmp.name,
+                use_header=False,
+                max_identifier_len=10,
+                identifier_col=3,
+                split_identifier_col=4,
+            )
             self.assertEqual(len(res), 9)
 
         # read with max_identifier_len equal to 0 -> expect empty list
@@ -110,8 +136,13 @@ class IdSplitterTest(unittest.TestCase):
             with tarfile.open(None, "w", fileobj=tmp, encoding="utf-8") as tmp_tar:
                 write_fake_identifiers(tmp_tar, n_lines=10, char_sizes=1, n_cols=5)
 
-            res = read_identifiers(csv_path=tmp.name, use_header=True, max_identifier_len=0,
-                                   identifier_col=3, split_identifier_col=4)
+            res = read_identifiers(
+                csv_path=tmp.name,
+                use_header=True,
+                max_identifier_len=0,
+                identifier_col=3,
+                split_identifier_col=4,
+            )
             self.assertEqual(len(res), 0)
 
         # generate temporary file with identifiers of specific lengths and filter by length
@@ -124,8 +155,13 @@ class IdSplitterTest(unittest.TestCase):
             # check filtering
             # read last two columns as identifiers
             for i in range(11):
-                res = read_identifiers(csv_path=tmp.name, use_header=True, max_identifier_len=i,
-                                       identifier_col=3, split_identifier_col=4)
+                res = read_identifiers(
+                    csv_path=tmp.name,
+                    use_header=True,
+                    max_identifier_len=i,
+                    identifier_col=3,
+                    split_identifier_col=4,
+                )
                 self.assertEqual(len(res), i)
 
         # read wrong columns
@@ -134,12 +170,22 @@ class IdSplitterTest(unittest.TestCase):
                 write_fake_identifiers(tmp_tar, n_lines=10, char_sizes=char_sizes, n_cols=2)
 
             with self.assertRaises(IndexError):
-                read_identifiers(csv_path=tmp.name, use_header=True, max_identifier_len=10,
-                                 identifier_col=3, split_identifier_col=4)
+                read_identifiers(
+                    csv_path=tmp.name,
+                    use_header=True,
+                    max_identifier_len=10,
+                    identifier_col=3,
+                    split_identifier_col=4,
+                )
 
         # normal file
         try:
-            read_identifiers(csv_path=IDENTIFIERS, use_header=True, max_identifier_len=10,
-                             identifier_col=3, split_identifier_col=4)
+            read_identifiers(
+                csv_path=IDENTIFIERS,
+                use_header=True,
+                max_identifier_len=10,
+                identifier_col=3,
+                split_identifier_col=4,
+            )
         except Exception as e:
             self.fail("read_identifiers raised %s with log %s" % (type(e), str(e)))

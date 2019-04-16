@@ -1,8 +1,7 @@
 # TODO (Guillemdb): fix imports
 from ml_core.algorithms.uast.uast_struct_to_bag import UastRandomWalk2Bag
 from ml_core.extractors.bags_extractor import BagsExtractor
-from ml_core.extractors.helpers import (
-    filter_kwargs, get_names_from_kwargs, register_extractor)
+from ml_core.extractors.helpers import filter_kwargs, get_names_from_kwargs, register_extractor
 
 
 @register_extractor

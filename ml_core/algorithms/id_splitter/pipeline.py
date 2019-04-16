@@ -9,6 +9,7 @@ import keras
 from keras import backend as kbackend
 from keras.callbacks import CSVLogger, LearningRateScheduler, ModelCheckpoint, TensorBoard
 import numpy
+
 try:
     import tensorflow as tf
 except ImportError:
@@ -91,8 +92,14 @@ def recall_np(y_true: numpy.array, y_pred: numpy.array, epsilon: float = EPSILON
     return true_positives / (possible_positives + epsilon)
 
 
-def report(model: keras.engine.training.Model, X: numpy.array, y: numpy.array, batch_size: int,
-           threshold: float = DEFAULT_THRESHOLD, epsilon: float = EPSILON) -> None:
+def report(
+    model: keras.engine.training.Model,
+    X: numpy.array,
+    y: numpy.array,
+    batch_size: int,
+    threshold: float = DEFAULT_THRESHOLD,
+    epsilon: float = EPSILON,
+) -> None:
     """
     Prints a metric report of the `model` on the  data `X` & `y`.
     The metrics printed are precision, recall, F1 score.
@@ -126,8 +133,9 @@ def config_keras() -> None:
     kbackend.tensorflow_backend.set_session(tf.Session(config=config))
 
 
-def build_train_generator(X: numpy.array, y: numpy.array,
-                          batch_size: int = 500) -> Iterable[Tuple[numpy.array]]:
+def build_train_generator(
+    X: numpy.array, y: numpy.array, batch_size: int = 500
+) -> Iterable[Tuple[numpy.array]]:
     """
     Builds the generator that yields features and their labels.
 
@@ -147,6 +155,7 @@ def build_train_generator(X: numpy.array, y: numpy.array,
                 start = i * batch_size
                 end = min((i + 1) * batch_size, X.shape[0])
                 yield X[start:end], y[start:end]
+
     return xy_generator()
 
 
@@ -165,11 +174,13 @@ def build_schedule(lr: float, final_lr: float, n_epochs: int) -> Callable:
     def schedule(epoch: int) -> float:
         assert 0 <= epoch < n_epochs
         return lr - delta * epoch
+
     return schedule
 
 
-def make_lr_scheduler(lr: float, final_lr: float, n_epochs: int,
-                      verbose: int = 1) -> keras.callbacks.LearningRateScheduler:
+def make_lr_scheduler(
+    lr: float, final_lr: float, n_epochs: int, verbose: int = 1
+) -> keras.callbacks.LearningRateScheduler:
     """
     Prepares the scheduler to decrease the learning rate while training.
 
@@ -193,20 +204,23 @@ def prepare_callbacks(output_dir: str) -> Tuple[Callable]:
     time = datetime.now().strftime("%y%m%d-%H%M")
     log_dir = os.path.join(output_dir, "tensorboard" + time)
     logging.info("Tensorboard directory: %s" % log_dir)
-    tensorboard = TensorBoard(log_dir=log_dir, batch_size=1000, write_images=True,
-                              write_graph=True)
+    tensorboard = TensorBoard(
+        log_dir=log_dir, batch_size=1000, write_images=True, write_graph=True
+    )
     csv_path = os.path.join(output_dir, "csv_logger_" + time + ".txt")
     logging.info("CSV logs: %s" % csv_path)
     csv_logger = CSVLogger(csv_path)
 
     filepath = os.path.join(output_dir, "best_" + time + ".model")
-    model_saver = ModelCheckpoint(filepath, monitor="val_recall", verbose=1, save_best_only=True,
-                                  mode="max")
+    model_saver = ModelCheckpoint(
+        filepath, monitor="val_recall", verbose=1, save_best_only=True, mode="max"
+    )
     return tensorboard, csv_logger, model_saver
 
 
-def create_generator_params(batch_size: int, samples_per_epoch: int, n_samples: int,
-                            epochs: int) -> Tuple[int]:
+def create_generator_params(
+    batch_size: int, samples_per_epoch: int, n_samples: int, epochs: int
+) -> Tuple[int]:
     """
     Helper function to split a huge dataset into smaller ones to enable more frequent reports.
 

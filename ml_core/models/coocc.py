@@ -1,5 +1,10 @@
 from modelforge.model import (
-    assemble_sparse_matrix, disassemble_sparse_matrix, merge_strings, Model, split_strings)
+    assemble_sparse_matrix,
+    disassemble_sparse_matrix,
+    merge_strings,
+    Model,
+    split_strings,
+)
 from modelforge.models import register_model
 
 from ml_core.models.license import DEFAULT_LICENSE
@@ -10,6 +15,7 @@ class Cooccurrences(Model):
     """
     Co-occurrence matrix.
     """
+
     NAME = "co-occurrences"
     VENDOR = "source{d}"
     DESCRIPTION = "Model that contains the sparse co-occurrence matrix of source code identifiers."
@@ -21,14 +27,19 @@ class Cooccurrences(Model):
         return self
 
     def _load_tree(self, tree):
-        self.construct(tokens=split_strings(tree["tokens"]),
-                       matrix=assemble_sparse_matrix(tree["matrix"]))
+        self.construct(
+            tokens=split_strings(tree["tokens"]), matrix=assemble_sparse_matrix(tree["matrix"])
+        )
 
     def dump(self):
         return """Number of words: %d
 First 10 words: %s
 Matrix: shape: %s non-zero: %d""" % (
-            len(self.tokens), self.tokens[:10], self.matrix.shape, self.matrix.getnnz())
+            len(self.tokens),
+            self.tokens[:10],
+            self.matrix.shape,
+            self.matrix.getnnz(),
+        )
 
     @property
     def tokens(self):
@@ -51,8 +62,10 @@ Matrix: shape: %s non-zero: %d""" % (
         return len(self._tokens)
 
     def _generate_tree(self):
-        return {"tokens": merge_strings(self.tokens),
-                "matrix": disassemble_sparse_matrix(self.matrix)}
+        return {
+            "tokens": merge_strings(self.tokens),
+            "matrix": disassemble_sparse_matrix(self.matrix),
+        }
 
     def matrix_to_rdd(self, spark_context: "pyspark.SparkContext") -> "pyspark.RDD":
         self._log.info("Convert coocc model to RDD...")

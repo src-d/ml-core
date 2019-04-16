@@ -10,6 +10,7 @@ class Uast2GraphletBag(Uast2BagBase):
     The graphlet of a UAST node is composed from the node itself, its parent and its children.
     Each node is represented by the internal role string.
     """
+
     @staticmethod
     def _extract_node(node, parent):
         return Node(parent=parent, internal_type=node.internal_type)

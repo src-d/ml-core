@@ -9,6 +9,7 @@ class TensorFlowModelTests(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_serialize(self):
         import tensorflow as tf
+
         a = tf.constant([[1, 0], [0, 1]])
         b = tf.constant([[0, 1], [1, 0]])
         c = tf.matmul(a, b)

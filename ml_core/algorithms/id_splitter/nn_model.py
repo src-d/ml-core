@@ -5,9 +5,17 @@ import warnings
 import keras
 from keras import backend as kbackend
 from keras.layers import (
-    BatchNormalization, Concatenate, Conv1D, Dense, Embedding, Input, TimeDistributed)
+    BatchNormalization,
+    Concatenate,
+    Conv1D,
+    Dense,
+    Embedding,
+    Input,
+    TimeDistributed,
+)
 from keras.models import Model
 import numpy
+
 try:
     import tensorflow as tf
 except ImportError:
@@ -48,8 +56,10 @@ def prepare_devices(devices: str) -> Tuple[str]:
         else:
             dev0 = dev1 = "/cpu:0"
     else:
-        raise ValueError("Expected 1 or 2 devices but got %d from the devices argument %s" %
-                         (len(devices), devices))
+        raise ValueError(
+            "Expected 1 or 2 devices but got %d from the devices argument %s"
+            % (len(devices), devices)
+        )
     return dev0, dev1
 
 
@@ -61,8 +71,14 @@ def prepare_input_emb(maxlen: int) -> Tuple[tf.Tensor]:
     :return: input and one-hot character embedding layer.
     """
     char_seq = Input((maxlen,))
-    emb = Embedding(input_dim=NUM_CHARS + 1, output_dim=NUM_CHARS + 1, input_length=maxlen,
-                    mask_zero=False, weights=[numpy.eye(NUM_CHARS + 1)], trainable=False)(char_seq)
+    emb = Embedding(
+        input_dim=NUM_CHARS + 1,
+        output_dim=NUM_CHARS + 1,
+        input_length=maxlen,
+        mask_zero=False,
+        weights=[numpy.eye(NUM_CHARS + 1)],
+        trainable=False,
+    )(char_seq)
     return char_seq, emb
 
 
@@ -79,8 +95,9 @@ def add_output_layer(hidden_layer: tf.Tensor) -> keras.layers.wrappers.TimeDistr
     return TimeDistributed(Dense(1, activation="sigmoid"))(norm_input)
 
 
-def add_rnn(X: tf.Tensor, units: int, rnn_layer: str, dev0: str = "/gpu:0",
-            dev1: str = "/gpu:1") -> tf.Tensor:
+def add_rnn(
+    X: tf.Tensor, units: int, rnn_layer: str, dev0: str = "/gpu:0", dev1: str = "/gpu:1"
+) -> tf.Tensor:
     """
     Adds a bidirectional RNN layer with the specified parameters.
 
@@ -106,8 +123,9 @@ def add_rnn(X: tf.Tensor, units: int, rnn_layer: str, dev0: str = "/gpu:0",
     return bidi
 
 
-def build_rnn(maxlen: int, units: int, stack: int, optimizer: str, dev0: str,
-              dev1: str, rnn_layer: str) -> keras.engine.training.Model:
+def build_rnn(
+    maxlen: int, units: int, stack: int, optimizer: str, dev0: str, dev1: str, rnn_layer: str
+) -> keras.engine.training.Model:
     """
     Builds a RNN model with the parameters specified as arguments.
 
@@ -126,8 +144,9 @@ def build_rnn(maxlen: int, units: int, stack: int, optimizer: str, dev0: str,
 
         # stack the BiDi-RNN layers
         for _ in range(stack):
-            hidden_layer = add_rnn(hidden_layer, units=units, rnn_layer=rnn_layer,
-                                   dev0=dev0, dev1=dev1)
+            hidden_layer = add_rnn(
+                hidden_layer, units=units, rnn_layer=rnn_layer, dev0=dev0, dev1=dev1
+            )
         output = add_output_layer(hidden_layer)
 
     # compile the model
@@ -136,8 +155,9 @@ def build_rnn(maxlen: int, units: int, stack: int, optimizer: str, dev0: str,
     return model
 
 
-def add_conv(X: tf.Tensor, filters: List[int], kernel_sizes: List[int],
-             output_n_filters: int) -> tf.Tensor:
+def add_conv(
+    X: tf.Tensor, filters: List[int], kernel_sizes: List[int], output_n_filters: int
+) -> tf.Tensor:
     """
     Builds a single convolutional layer.
 
@@ -154,8 +174,9 @@ def add_conv(X: tf.Tensor, filters: List[int], kernel_sizes: List[int],
     convs = []
 
     for n_filters, kernel_size in zip(filters, kernel_sizes):
-        conv = Conv1D(filters=n_filters, kernel_size=kernel_size, padding="same",
-                      activation="relu")
+        conv = Conv1D(
+            filters=n_filters, kernel_size=kernel_size, padding="same", activation="relu"
+        )
         convs.append(conv(X))
 
     # concatenate all convolutions
@@ -167,8 +188,15 @@ def add_conv(X: tf.Tensor, filters: List[int], kernel_sizes: List[int],
     return conv(conc)
 
 
-def build_cnn(maxlen: int, filters: List[int], output_n_filters: int, stack: int,
-              kernel_sizes: List[int], optimizer: str, device: str) -> keras.engine.training.Model:
+def build_cnn(
+    maxlen: int,
+    filters: List[int],
+    output_n_filters: int,
+    stack: int,
+    kernel_sizes: List[int],
+    optimizer: str,
+    device: str,
+) -> keras.engine.training.Model:
     """
     Builds a CNN model with the parameters specified as arguments.
 
@@ -187,8 +215,12 @@ def build_cnn(maxlen: int, filters: List[int], output_n_filters: int, stack: int
 
         # stack the CNN layers
         for _ in range(stack):
-            hidden_layer = add_conv(hidden_layer, filters=filters, kernel_sizes=kernel_sizes,
-                                    output_n_filters=output_n_filters)
+            hidden_layer = add_conv(
+                hidden_layer,
+                filters=filters,
+                kernel_sizes=kernel_sizes,
+                output_n_filters=output_n_filters,
+            )
         output = add_output_layer(hidden_layer)
 
     # compile the model

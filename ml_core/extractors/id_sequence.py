@@ -19,6 +19,7 @@ class IdSequenceExtractor(BagsExtractor):
     TODO(zurk): Split BagsExtractor into two clases: Extractor and BagsExtractor(Extractor),
     re-inherit this class from Extractor, delete explanations from docstring.
     """
+
     NAMESPACE = ""
     NAME = "id sequence"
     OPTS = {}
@@ -26,7 +27,8 @@ class IdSequenceExtractor(BagsExtractor):
     def __init__(self, split_stem=False, **kwargs):
         super().__init__(**kwargs)
         self.uast2id_sequence = Uast2IdSequence(
-            None, NoopTokenParser() if not split_stem else None)
+            None, NoopTokenParser() if not split_stem else None
+        )
 
     def extract(self, uast: bblfsh.Node) -> Iterable[str]:
         yield self.uast2id_sequence(uast), None

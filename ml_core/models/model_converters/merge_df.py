@@ -10,11 +10,13 @@ class MergeDocFreq(Model2Base):
     """
     Merges several :class:`DocumentFrequencies` models together.
     """
+
     MODEL_FROM_CLASS = DocumentFrequencies
     MODEL_TO_CLASS = DocumentFrequencies
 
-    def __init__(self, min_docfreq: int, vocabulary_size: int, ordered: bool = False,
-                 *args, **kwargs):
+    def __init__(
+        self, min_docfreq: int, vocabulary_size: int, ordered: bool = False, *args, **kwargs
+    ):
         super().__init__(num_processes=1, *args, **kwargs)
         self.ordered = ordered
         self.min_docfreq = min_docfreq
@@ -29,11 +31,11 @@ class MergeDocFreq(Model2Base):
 
     def finalize(self, index: int, destdir: str):
         df_model = OrderedDocumentFrequencies if self.ordered else DocumentFrequencies
-        df_model(log_level=self._log.level) \
-            .construct(self._docs, self._df) \
-            .prune(self.min_docfreq) \
-            .greatest(self.vocabulary_size) \
-            .save(output=self._save_path(index, destdir), series="id2vec")
+        df_model(log_level=self._log.level).construct(self._docs, self._df).prune(
+            self.min_docfreq
+        ).greatest(self.vocabulary_size).save(
+            output=self._save_path(index, destdir), series="id2vec"
+        )
 
     @staticmethod
     def _save_path(index: int, destdir: str):

@@ -12,6 +12,7 @@ class OrderedDocumentFrequencies(DocumentFrequencies):
     Compatible with the original DocumentFrequencies. This model maintains the determinitic
     sequence of the tokens.
     """
+
     # NAME is the same
 
     def construct(self, docs: int, tokfreqs: Iterable[Dict[str, int]]):
