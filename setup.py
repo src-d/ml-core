@@ -45,14 +45,9 @@ setup(
         "tqdm>=4.20,<5.0",
         "typing;python_version<'3.5'",
     ],
-    extras_require={
-        "tf": ["tensorflow>=1.0,<2.0"],
-        "tf_gpu": ["tensorflow-gpu>=1.0,<2.0"],
-    },
+    extras_require={"tf": ["tensorflow>=1.0,<2.0"], "tf_gpu": ["tensorflow-gpu>=1.0,<2.0"]},
     tests_require=["docker>=3.6.0,<4.0"],
-    package_data={
-        "": ["LICENSE.md", "README.md"],
-    },
+    package_data={"": ["LICENSE.md", "README.md"]},
     python_requires=">=3.5",
     classifiers=[
         "Development Status :: 3 - Alpha",
