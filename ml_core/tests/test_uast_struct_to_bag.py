@@ -2,7 +2,7 @@ import unittest
 
 from bblfsh import BblfshClient
 
-from ml_core.algorithms.uast.uast_struct_to_bag import UastRandomWalk2Bag, UastSeq2Bag
+from ml_core.algorithms.uast.struct_to_bag import UastRandomWalk2Bag, UastSeq2Bag
 from ml_core.tests.models import SOURCE_PY
 
 

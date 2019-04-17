@@ -3,7 +3,7 @@ import unittest
 from bblfsh import BblfshClient
 
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast.uast_id_distance import Uast2IdLineDistance, Uast2IdTreeDistance
+from ml_core.algorithms.uast.id_distance import Uast2IdLineDistance, Uast2IdTreeDistance
 from ml_core.tests.models import SOURCE_PY
 
 

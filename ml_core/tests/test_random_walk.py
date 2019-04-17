@@ -2,8 +2,8 @@ import unittest
 
 import bblfsh
 
-from ml_core.algorithms.uast.uast_ids_to_bag import FakeVocabulary
-from ml_core.algorithms.uast.uast_struct_to_bag import Uast2RandomWalks
+from ml_core.algorithms.uast.ids_to_bag import FakeVocabulary
+from ml_core.algorithms.uast.struct_to_bag import Uast2RandomWalks
 from ml_core.tests import models
 
 

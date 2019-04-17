@@ -2,7 +2,7 @@ from typing import Iterable, Tuple
 
 import bblfsh
 
-from ml_core.algorithms.uast.uast_ids_to_bag import UastIds2Bag
+from ml_core.algorithms.uast.ids_to_bag import UastIds2Bag
 from ml_core.utils import bblfsh_roles
 
 

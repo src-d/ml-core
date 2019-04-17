@@ -2,7 +2,7 @@ from typing import Iterable, Tuple
 
 import bblfsh
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast.uast_id_distance import (
+from ml_core.algorithms.uast.id_distance import (
     Uast2IdDistance,
     Uast2IdLineDistance,
     Uast2IdTreeDistance,

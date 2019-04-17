@@ -1,4 +1,4 @@
-from ml_core.algorithms.uast.uast_inttypes_to_graphlets import Uast2GraphletBag
+from ml_core.algorithms.uast.inttypes_to_graphlets import Uast2GraphletBag
 from ml_core.extractors import (
     BagsExtractor,
     filter_kwargs,

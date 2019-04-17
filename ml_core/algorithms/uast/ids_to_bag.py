@@ -3,7 +3,7 @@ from collections import defaultdict, deque
 import bblfsh
 
 from ml_core.algorithms.token_parser import NoopTokenParser, TokenParser
-from ml_core.algorithms.uast.uast_to_bag import Uast2BagBase
+from ml_core.algorithms.uast.to_bag import Uast2BagBase
 from ml_core.utils import bblfsh_roles
 
 # TODO (Guillemdb) maybe move this to utils?, to base?

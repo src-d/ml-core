@@ -2,7 +2,7 @@ import unittest
 
 from bblfsh import BblfshClient
 
-from ml_core.algorithms.uast.uast_inttypes_to_graphlets import Uast2GraphletBag
+from ml_core.algorithms.uast.inttypes_to_graphlets import Uast2GraphletBag
 from ml_core.tests.models import SOURCE_PY
 
 

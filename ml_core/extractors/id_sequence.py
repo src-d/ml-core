@@ -3,7 +3,7 @@ from typing import Iterable
 import bblfsh
 
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast.uast_to_id_sequence import Uast2IdSequence
+from ml_core.algorithms.uast.to_id_sequence import Uast2IdSequence
 from ml_core.extractors.bags_extractor import BagsExtractor
 
 

@@ -3,7 +3,7 @@ import unittest
 from bblfsh import BblfshClient
 
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast.uast_to_id_sequence import Uast2IdSequence
+from ml_core.algorithms.uast.to_id_sequence import Uast2IdSequence
 from ml_core.tests.models import SOURCE_PY
 
 

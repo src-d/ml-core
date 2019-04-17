@@ -3,7 +3,7 @@ from collections import defaultdict
 import os
 
 # TODO (Guillemdb): fix imports
-from ml_core.algorithms.uast.uast_ids_to_bag import uast2sequence, UastIds2Bag
+from ml_core.algorithms.uast.ids_to_bag import uast2sequence, UastIds2Bag
 from ml_core.extractors.bags_extractor import BagsExtractor
 from ml_core.extractors.helpers import register_extractor
 from ml_core.utils import bblfsh_roles

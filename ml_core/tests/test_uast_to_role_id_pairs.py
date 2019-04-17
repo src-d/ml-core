@@ -3,7 +3,7 @@ import unittest
 from bblfsh import BblfshClient
 
 from ml_core.algorithms.token_parser import NoopTokenParser
-from ml_core.algorithms.uast.uast_to_role_id_pairs import Uast2RoleIdPairs
+from ml_core.algorithms.uast.to_role_id_pairs import Uast2RoleIdPairs
 from ml_core.tests.models import SOURCE_PY
 
 
