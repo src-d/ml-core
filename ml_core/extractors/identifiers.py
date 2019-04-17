@@ -1,4 +1,3 @@
-# TODO (Guillemdb): fix imports
 from ml_core.algorithms.token_parser import NoopTokenParser
 from ml_core.algorithms.uast.ids_to_bag import UastIds2Bag
 from ml_core.extractors.bags_extractor import BagsExtractor
