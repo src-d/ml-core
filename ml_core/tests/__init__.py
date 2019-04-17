@@ -1,5 +1,4 @@
 import sys
-from unittest import SkipTest
 
 from modelforge import slogging
 

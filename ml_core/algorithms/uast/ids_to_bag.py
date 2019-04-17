@@ -6,7 +6,7 @@ from ml_core.algorithms.token_parser import NoopTokenParser, TokenParser
 from ml_core.algorithms.uast.to_bag import Uast2BagBase
 from ml_core.utils import bblfsh_roles
 
-# TODO (Guillemdb) maybe move this to utils?, to base?
+
 def uast2sequence(root):
     sequence = []
     nodes = defaultdict(deque)

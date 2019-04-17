@@ -1,6 +1,7 @@
 from typing import Iterable, Tuple
 
 import bblfsh
+
 from ml_core.algorithms.token_parser import NoopTokenParser
 from ml_core.algorithms.uast.id_distance import (
     Uast2IdDistance,
