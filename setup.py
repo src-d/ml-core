@@ -24,7 +24,6 @@ setup(
     download_url="https://github.com/src-d/ml-core",
     packages=find_packages(exclude=("ml_core.tests",)),
     namespace_packages=["ml_core"],
-    entry_points={"console_scripts": ["srcml=ml_core.__main__:main"]},
     keywords=[
         "machine learning on source code",
         "word2vec",
@@ -49,14 +48,12 @@ setup(
     extras_require={
         "tf": ["tensorflow>=1.0,<2.0"],
         "tf_gpu": ["tensorflow-gpu>=1.0,<2.0"],
-        "pandas": ["pandas>=0.24.1,<1.0"],
     },
     tests_require=["docker>=3.6.0,<4.0"],
     package_data={
         "": ["LICENSE.md", "README.md"],
-        "sourced": ["ml_core/transformers/languages.yml"],
     },
-    python_requires=">=3.4",
+    python_requires=">=3.5",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",

@@ -28,4 +28,3 @@ echo\n\' > /browser && \
 
 COPY . ml_core/
 RUN cd ml_core && pip3 install -e .
-# ENTRYPOINT ["analyzer"]
