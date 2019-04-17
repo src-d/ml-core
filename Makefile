@@ -16,7 +16,7 @@ docs:
 
 .PHONY: docker-build
 docker-build:
-	docker build -t srcd/m_corel .
+	docker build -t srcd/ml_core .
 
 .PHONY: docker-test
 docker-test: docker-build
