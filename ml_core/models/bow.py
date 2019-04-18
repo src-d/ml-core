@@ -22,7 +22,7 @@ class BOW(Model):
     Weighted bag of words model. Every word is correspond to an index and its matrix column.
     Bag is a word set from repository, file or anything else.
     Word is source code identifier or its part.
-    This model depends on :class:`sourced.ml.models.DocumentFrequencies`.
+    This model depends on :class:`ml_core.models.DocumentFrequencies`.
     """
 
     NAME = "bow"

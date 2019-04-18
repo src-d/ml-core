@@ -1,5 +1,19 @@
 current_dir = $(shell pwd)
 
+PROJECT = ml_core
+
+DOCKERFILES = Dockerfile:$(PROJECT)
+DOCKER_ORG = "srcd"
+
+# Including ci Makefile
+CI_REPOSITORY ?= https://github.com/src-d/ci.git
+CI_BRANCH ?= v1
+CI_PATH ?= .ci
+MAKEFILE := $(CI_PATH)/Makefile.main
+$(MAKEFILE):
+	git clone --quiet --depth 1 -b $(CI_BRANCH) $(CI_REPOSITORY) $(CI_PATH);
+-include $(MAKEFILE)
+
 .PHONY: check
 check:
 	! (grep -R /tmp ml_core/tests)
@@ -10,24 +24,15 @@ check:
 test:
 	python3 -m unittest discover
 
-.PHONY: docs
-docs:
-	cd docs && python3 -msphinx -M html . build
-
-.PHONY: docker-build
-docker-build:
-	docker build -t srcd/ml_core .
-
 .PHONY: docker-test
-docker-test: docker-build
-	docker ps | grep bblfshd  # bblfsh server should be running
+docker-test:
+	docker ps | grep bblfshd  # bblfsh server should be run. Try `make bblfsh-start` command.
 	docker run --rm -it --network host --entrypoint python3 -w /ml_core \
-		-v $(current_dir)/.git:/ml_core/.git \
-		srcd/ml_core -m unittest discover
+		-e SKIP_BBLFSH_UTILS_TESTS=1 \
+		srcd/ml_core:$(VERSION) -m unittest discover
 
 .PHONY: bblfsh-start
 bblfsh-start:
 	! docker ps | grep bblfshd # bblfsh server should not be running already
-	docker run -d --name style_analyzer_bblfshd --privileged -p 9432\:9432 bblfsh/bblfshd\:v2.11.8
-	docker exec style_analyzer_bblfshd bblfshctl driver install \
-		javascript docker://bblfsh/javascript-driver\:v2.7.1
+	docker run -d --name ml_core_bblfshd --privileged -p 9432\:9432 bblfsh/bblfshd\:v2.12.1
+	docker exec -it ml_core_bblfshd bblfshctl driver install python bblfsh/python-driver\:v2.9.0

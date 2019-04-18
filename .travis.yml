@@ -11,19 +11,12 @@ before_cache:
 stages:
   - style
   - test
-  - name: deploy
-    if: tag =~ .*
 _install: &_install
-  - export ML_CORE_TESTS_GIT_DIR=$(pwd)
-  - version=$(python3 setup.py --version)
-  - docker build -t srcd/ml_core:$version .
-  - pip install --upgrade pip cython codecov
-  - ML_CORE_SETUP_INCLUDE_TESTS=1 pip install .[test]
-  - cd $(pip show ml_core|grep Location|cut -d' ' -f2)/ml_core
-_before_script: &_before_script
-  - cd -
   - travis_retry make bblfsh-start
-  - cd -
+  - pip install --upgrade pip cython codecov
+  - ML_CORE_SETUP_INCLUDE_TESTS=1 pip install .[tf]
+  - cd $(pip show ml_core|grep Location|cut -d' ' -f2)/ml_core
+  - find . -wholename "*/tests/*" -type d -exec chmod 555 {} \;
 _coverage: &_coverage
   - coverage run --concurrency=multiprocessing -m unittest discover
   - travis_retry coverage combine
@@ -40,42 +33,22 @@ matrix:
       python: 3.5
       script: *_coverage
       install: *_install
-      before_script: *_before_script
     - stage: test
       python: 3.6
       script: *_coverage
       install: *_install
-      before_script: *_before_script
     - stage: test
       python: 3.7
       script: *_coverage
       install: *_install
-      before_script: *_before_script
       after_success:
         - codecov
     - stage: test
-      python: 3.7
+      name: Tests inside docker
       script:
-        - make docs
-        - make docker-test
+        - make docker-build VERSION=test
+        - make docker-test VERSION=test
       install:
-        # - pip install -r docs/requirements.txt
-        - pip install -r requirements.txt
-        - cd $(pwd)
-      before_script: *_before_script
-    # - stage: deploy
-    #  python: 3.5
-    #  install:
-    #    - pip install --upgrade pip
-    #    - pip install twine pyopenssl
-    #  script:
-    #    - test $(python3 setup.py --version) == $TRAVIS_TAG
-    #    - python3 setup.py bdist_wheel
-    #  deploy:
-    #    provider: script
-    #    script: twine upload dist/*py3-none-any* -u $PYPI_LOGIN -p $PYPI_PASS
-    #    skip_cleanup: true
-    #    on:
-    #      tags: true
+        - travis_retry make bblfsh-start
 notifications:
   email: false

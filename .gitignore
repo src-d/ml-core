@@ -1,5 +1,3 @@
-#Modelforge models
-*.asdf
 
 #Mac OS
 *.DS_Store
@@ -113,3 +111,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# CI
+.ci

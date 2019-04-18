@@ -1,4 +1,5 @@
 import errno
+import os
 import random
 import socket
 import time
@@ -9,6 +10,7 @@ import docker.client
 from ml_core.utils.bblfsh import BBLFSH_VERSION_HIGH, BBLFSH_VERSION_LOW, check_version
 
 
+@unittest.skipIf(os.getenv("SKIP_BBLFSH_UTILS_TESTS", False), "Skip ml_core.utils.bblfsh tests.")
 class BblfshUtilsTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

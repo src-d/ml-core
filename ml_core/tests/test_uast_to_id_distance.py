@@ -48,7 +48,7 @@ class Uast2IdTreeDistanceTest(unittest.TestCase):
             (("utmain", "setup_logging"), 3),
             (("utmain", "setup_logging"), 3),
             (("utmain", "sys"), 3),
-            (("utmain", "sys"), 3),
+            (("utmain", "sys"), 3)
         ]
 
         res = sorted(self.uast2role_id_pairs(self.uast))
@@ -65,33 +65,25 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
 
     def test_result(self):
         correct = [
-            (("__package__", "ModuleSpec"), 2),
             (("__spec__", "ModuleSpec"), 0),
             (("__spec__", "ModuleSpec"), 1),
             (("__spec__", "ModuleSpec"), 1),
-            (("__spec__", "ModuleSpec"), 2),
             (("__spec__", "__package__"), 0),
-            (("collections", "ModuleSpec"), 1),
             (("collections", "ModuleSpec"), 2),
             (("collections", "__package__"), 1),
             (("collections", "__spec__"), 1),
-            (("collections", "__spec__"), 2),
             (("modules", "__package__"), 1),
             (("modules", "__spec__"), 1),
             (("modules", "collections"), 2),
             (("namedtuple", "ModuleSpec"), 0),
             (("namedtuple", "ModuleSpec"), 1),
-            (("namedtuple", "ModuleSpec"), 1),
             (("namedtuple", "ModuleSpec"), 2),
             (("namedtuple", "ModuleSpec"), 2),
             (("namedtuple", "__package__"), 1),
-            (("namedtuple", "__package__"), 2),
             (("namedtuple", "__spec__"), 1),
             (("namedtuple", "__spec__"), 1),
-            (("namedtuple", "__spec__"), 2),
-            (("namedtuple", "__spec__"), 2),
             (("namedtuple", "collections"), 0),
-            (("namedtuple", "collections"), 1),
+            (("namedtuple", "collections"), 2),
             (("namedtuple", "modules"), 2),
             (("setup_logging", "modelforge.logs"), 0),
             (("setup_logging", "setup"), 1),
@@ -107,8 +99,6 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
             (("utmain", "ModuleSpec"), 1),
             (("utmain", "ModuleSpec"), 1),
             (("utmain", "ModuleSpec"), 2),
-            (("utmain", "ModuleSpec"), 2),
-            (("utmain", "ModuleSpec"), 2),
             (("utmain", "__package__"), 0),
             (("utmain", "__package__"), 0),
             (("utmain", "__package__"), 1),
@@ -120,7 +110,6 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
             (("utmain", "collections"), 1),
             (("utmain", "collections"), 1),
             (("utmain", "collections"), 2),
-            (("utmain", "collections"), 2),
             (("utmain", "modules"), 0),
             (("utmain", "modules"), 1),
             (("utmain", "modules"), 1),
@@ -128,12 +117,9 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
             (("utmain", "namedtuple"), 1),
             (("utmain", "namedtuple"), 1),
             (("utmain", "namedtuple"), 2),
-            (("utmain", "namedtuple"), 2),
-            (("utmain", "namedtuple"), 2),
-            (("utmain", "namedtuple"), 2),
             (("utmain", "sys"), 0),
             (("utmain", "sys"), 1),
-            (("utmain", "sys"), 1),
+            (("utmain", "sys"), 1)
         ]
 
         res = sorted(self.uast2role_id_pairs(self.uast))
