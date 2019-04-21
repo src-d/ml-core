@@ -4,23 +4,22 @@ import os.path
 
 from setuptools import find_packages, setup
 
-sourcedml = SourceFileLoader("ml_core", "./ml_core/__init__.py").load_module()
+sourcedml = SourceFileLoader("sourced-ml-core", "./sourced/ml/core/__init__.py").load_module()
 
 with io.open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 tf_requires = ["tensorflow>=1.0,<2.0"]
 tf_gpu_requires = ["tensorflow-gpu>=1.0,<2.0"]
-exclude_packages = (("ml_core.tests", "ml_core.tests.source")
-                    if not os.getenv("ML_CORE_SETUP_INCLUDE_TESTS", False) else ())
+exclude_packages = (
+    ("sourced.ml.core.tests", "sourced.ml.core.tests.source")
+    if not os.getenv("ML_CORE_SETUP_INCLUDE_TESTS", False)
+    else ()
+)
 
-print("!!!!!!")
-print(exclude_packages)
-print("!!!!!!")
-print(find_packages(exclude=exclude_packages))
 
 setup(
-    name="ml-core",
+    name="sourced-ml-core",
     description="Framework for machine learning on source code. "
     "Provides API and tools to train and use models based "
     "on source code features extracted from Babelfish's UASTs.",
@@ -55,8 +54,10 @@ setup(
     ],
     extras_require={"tf": tf_requires, "tf_gpu": tf_gpu_requires},
     tests_require=["docker>=3.6.0,<4.0"],
-    package_data={"": ["LICENSE.md", "README.md"],
-                  "ml_core.tests": ["./asdf/*.asdf", "./swivel/*", "identifiers.csv.tar.gz"]},
+    package_data={
+        "": ["LICENSE.md", "README.md"],
+        "sourced.ml.core.tests": ["./asdf/*.asdf", "./swivel/*", "identifiers.csv.tar.gz"],
+    },
     python_requires=">=3.5",
     classifiers=[
         "Development Status :: 3 - Alpha",

@@ -15,7 +15,7 @@ _install: &_install
   - travis_retry make bblfsh-start
   - pip install --upgrade pip cython codecov
   - ML_CORE_SETUP_INCLUDE_TESTS=1 pip install .[tf]
-  - cd $(pip show ml_core|grep Location|cut -d' ' -f2)/ml_core
+  - cd $(pip show sourced.ml.core|grep Location|cut -d' ' -f2)/sourced/ml/core
   - find . -wholename "*/tests/*" -type d -exec chmod 555 {} \;
 _coverage: &_coverage
   - coverage run --concurrency=multiprocessing -m unittest discover

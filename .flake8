@@ -6,12 +6,12 @@ exclude=
     doc
 inline-quotes="
 import-order-style=appnexus
-application-package-names=ml_core
+application-package-names=sourced.ml.core
 per-file-ignores=
     **/tests/**:D
     # Should be resolved one by one
     # Related issue: https://github.com/src-d/ml/issues/354
-    ./ml_core/extractors/*:D
-    ./ml_core/models/**:D
-    ./ml_core/algorithms/**:D
-    ./ml_core/utils/*:D
+    ./sourced/ml/core/extractors/*:D
+    ./sourced/ml/core/models/**:D
+    ./sourced/ml/core/algorithms/**:D
+    ./sourced/ml/core/utils/*:D

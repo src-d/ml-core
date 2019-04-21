@@ -16,9 +16,9 @@ $(MAKEFILE):
 
 .PHONY: check
 check:
-	! (grep -R /tmp ml_core/tests)
+	! (grep -R /tmp sourced/ml/core/tests)
 	flake8 --count
-	pylint ml_core
+	pylint sourced
 
 .PHONY: test
 test:
