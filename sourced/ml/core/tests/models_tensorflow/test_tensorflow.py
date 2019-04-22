@@ -23,7 +23,8 @@ class TensorFlowModelTests(unittest.TestCase):
         buffer = io.BytesIO()
         with tf.Session() as session:
             TensorFlowModel().construct(session=session, outputs=[c.name[:-2]]).save(
-                buffer, series="tensorflow-model")
+                buffer, series="tensorflow-model"
+            )
         buffer.seek(0)
         model = TensorFlowModel().load(buffer)
         self.assertEqual(gd.node, model.graphdef.node)
