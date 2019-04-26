@@ -1,0 +1,52 @@
+language: python
+sudo: true
+dist: xenial
+services:
+  - docker
+cache: pip
+before_cache:
+  - chown -R travis:travis $HOME/.cache/pip
+stages:
+  - style
+  - test
+_install: &_install
+  - travis_retry make bblfsh-start
+  - pip install --upgrade pip cython codecov
+  - ML_CORE_SETUP_INCLUDE_TESTS=1 pip install .[tf]
+  - cd $(pip show sourced.ml.core|grep Location|cut -d' ' -f2)/sourced/ml/core
+  - find . -wholename "*/tests/*" -type d -exec chmod 555 {} \;
+_coverage: &_coverage
+  - coverage run --concurrency=multiprocessing -m unittest discover
+  - travis_retry coverage combine
+matrix:
+  fast_finish: true
+  include:
+    - stage: style
+      python: 3.7
+      script:
+        - make check
+      install:
+        - pip install -r requirements-lint.txt
+    - stage: test
+      python: 3.5
+      script: *_coverage
+      install: *_install
+    - stage: test
+      python: 3.6
+      script: *_coverage
+      install: *_install
+    - stage: test
+      python: 3.7
+      script: *_coverage
+      install: *_install
+      after_success:
+        - codecov
+    - stage: test
+      name: Tests inside docker
+      script:
+        - make docker-build VERSION=test
+        - make docker-test VERSION=test
+      install:
+        - travis_retry make bblfsh-start
+notifications:
+  email: false
