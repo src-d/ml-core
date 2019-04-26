@@ -2,7 +2,7 @@ from collections import defaultdict
 import random
 
 from sourced.ml.algorithms import uast2sequence
-from sourced.ml.algorithms.uast_ids_to_bag import FakeVocabulary, Uast2BagBase
+from sourced.ml.core.algorithms.uast_ids_to_bag import FakeVocabulary, Uast2BagBase
 
 
 class Uast2StructBagBase(Uast2BagBase):

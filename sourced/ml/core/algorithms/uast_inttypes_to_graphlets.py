@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from sourced.ml.algorithms.uast_ids_to_bag import Uast2BagBase
+from sourced.ml.core.algorithms.uast_ids_to_bag import Uast2BagBase
 from sourced.ml.algorithms.uast_struct_to_bag import Node
 
 
