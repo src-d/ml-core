@@ -1,8 +1,6 @@
 language: python
 sudo: true
 dist: xenial
-git:
-  depth: 9999999
 services:
   - docker
 cache: pip

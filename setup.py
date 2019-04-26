@@ -20,9 +20,9 @@ exclude_packages = (
 
 setup(
     name="sourced-ml-core",
-    description="Framework for machine learning on source code. "
-    "Provides API and tools to train and use models based "
-    "on source code features extracted from Babelfish's UASTs.",
+    description="Library containing the core algorithms for machine learning on source code. "
+                "Provides API and tools to train and use models based "
+                "on source code features extracted from Babelfish's UASTs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     version=sourcedml.__version__,
@@ -44,9 +44,8 @@ setup(
     ],
     install_requires=[
         "PyStemmer>=1.3,<2.0",
-        "bblfsh>=2.2.1,<3.0",
+        "bblfsh>=2.12.7,<3.0",
         "modelforge>=0.12.1,<0.13",
-        "humanize>=0.5.0,<0.6",
         "pygments>=2.2.0,<3.0",
         "keras>=2.0,<3.0",
         "scikit-learn>=0.19,<1.0",
