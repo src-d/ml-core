@@ -6,8 +6,8 @@ from modelforge import assemble_sparse_matrix, disassemble_sparse_matrix, merge_
 from modelforge.progress_bar import progress_bar
 from scipy import sparse
 
-from sourced.ml.models.df import DocumentFrequencies
-from sourced.ml.models.license import DEFAULT_LICENSE
+from sourced.ml.core.models.df import DocumentFrequencies
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model

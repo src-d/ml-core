@@ -3,13 +3,13 @@ import unittest
 
 import numpy
 
-from sourced.ml.tests import has_tensorflow
+from sourced.ml.core.tests import has_tensorflow
 
 
 class IdSplitterPipelineTest(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_binarize(self):
-        from sourced.ml.algorithms.id_splitter.pipeline import binarize
+        from sourced.ml.core.algorithms.id_splitter.pipeline import binarize
         thresholds = [0, 0.09, 0.19, 0.29, 0.39, 0.49, 0.59, 0.69, 0.79, 0.89, 0.99]
         n_pos = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
@@ -35,7 +35,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_prepare_devices(self):
-        from sourced.ml.algorithms.id_splitter.nn_model import prepare_devices
+        from sourced.ml.core.algorithms.id_splitter.nn_model import prepare_devices
         correct_args = ["1", "0,1", "-1"]
         resulted_dev = [("/gpu:1", "/gpu:1"), ("/gpu:0", "/gpu:1"), ("/cpu:0", "/cpu:0")]
         for res, arg in zip(resulted_dev, correct_args):
@@ -48,7 +48,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_build_schedule(self):
-        from sourced.ml.algorithms.id_splitter.pipeline import build_schedule
+        from sourced.ml.core.algorithms.id_splitter.pipeline import build_schedule
         start_lr = 10
         end_lr = 1
         n_epochs = 9
@@ -65,7 +65,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_build_train_generator(self):
-        from sourced.ml.algorithms.id_splitter.pipeline import build_train_generator
+        from sourced.ml.core.algorithms.id_splitter.pipeline import build_train_generator
         batch_size = 3
         # mismatch number of samples
         bad_x = numpy.zeros(3)
@@ -84,7 +84,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_train_parameters(self):
-        from sourced.ml.algorithms.id_splitter.pipeline import create_generator_params
+        from sourced.ml.core.algorithms.id_splitter.pipeline import create_generator_params
         batch_size = 500
         samples_per_epoch = 10 ** 6
         n_samples = 40 * 10 ** 6
@@ -101,7 +101,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_config_keras(self):
         from keras.backend.tensorflow_backend import get_session
-        from sourced.ml.algorithms.id_splitter.pipeline import config_keras
+        from sourced.ml.core.algorithms.id_splitter.pipeline import config_keras
         config_keras()
         sess = get_session()
         self.assertTrue(sess._config.gpu_options.allow_growth)
@@ -109,7 +109,7 @@ class IdSplitterPipelineTest(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_prepare_callbacks(self):
         from keras.callbacks import TensorBoard, CSVLogger, ModelCheckpoint
-        from sourced.ml.algorithms.id_splitter.pipeline import prepare_callbacks
+        from sourced.ml.core.algorithms.id_splitter.pipeline import prepare_callbacks
         with tempfile.TemporaryDirectory() as tmpdir:
             callbacks = prepare_callbacks(tmpdir)
 

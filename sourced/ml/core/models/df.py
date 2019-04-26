@@ -4,7 +4,7 @@ from typing import Dict, Iterable, List, Union
 from modelforge import merge_strings, Model, register_model, split_strings
 import numpy
 
-from sourced.ml.models.license import DEFAULT_LICENSE
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model

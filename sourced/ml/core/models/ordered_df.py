@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List
 from modelforge import merge_strings, register_model, split_strings
 import numpy
 
-from sourced.ml.models import DocumentFrequencies
+from sourced.ml.core.models import DocumentFrequencies
 
 
 @register_model

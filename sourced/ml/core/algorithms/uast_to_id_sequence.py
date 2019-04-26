@@ -2,7 +2,7 @@ from typing import Iterable
 
 import bblfsh
 
-from sourced.ml.algorithms.uast_id_distance import Uast2IdLineDistance
+from sourced.ml.core.algorithms.uast_id_distance import Uast2IdLineDistance
 
 
 class Uast2IdSequence(Uast2IdLineDistance):

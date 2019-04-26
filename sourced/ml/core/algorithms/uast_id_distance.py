@@ -4,7 +4,7 @@ from typing import Iterable, Tuple, Union
 import bblfsh
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import UastIds2Bag
-from sourced.ml.utils import bblfsh_roles
+from sourced.ml.core.utils import bblfsh_roles
 
 
 class Uast2IdDistance(UastIds2Bag):

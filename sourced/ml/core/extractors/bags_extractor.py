@@ -1,7 +1,8 @@
 import bblfsh
 
-from sourced.ml.algorithms import NoopTokenParser, Uast2RoleIdPairs
-from sourced.ml.utils import PickleableLogger
+from sourced.ml.core.algorithms.token_parser import NoopTokenParser
+from sourced.ml.core.algorithms.uast_to_role_id_pairs import Uast2RoleIdPairs
+from sourced.ml.core.utils.pickleable_logger import PickleableLogger
 
 
 class Extractor(PickleableLogger):

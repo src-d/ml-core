@@ -1,6 +1,7 @@
-from sourced.ml.algorithms import Uast2GraphletBag
-from sourced.ml.extractors import \
-    (BagsExtractor, filter_kwargs, get_names_from_kwargs, register_extractor)
+from sourced.ml.core.algorithms.uast_inttypes_to_graphlets import Uast2GraphletBag
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.extractors.helpers import \
+    (filter_kwargs, get_names_from_kwargs, register_extractor)
 
 
 @register_extractor

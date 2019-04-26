@@ -10,7 +10,7 @@ import unittest
 
 from modelforge.tools import dump_model
 
-import sourced.ml.tests.models as paths
+import sourced.ml.core.tests.models as paths
 
 
 cache_dir = os.path.join(tempfile.gettempdir(), "ml-test-dump")

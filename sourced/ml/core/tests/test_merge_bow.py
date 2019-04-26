@@ -5,8 +5,8 @@ import unittest
 import numpy
 from scipy.sparse import csc_matrix
 
-from sourced.ml.models import BOW
-from sourced.ml.models.model_converters.merge_bow import MergeBOW
+from sourced.ml.core.models import BOW
+from sourced.ml.core.models.model_converters.merge_bow import MergeBOW
 
 
 class MergeBOWTests(unittest.TestCase):

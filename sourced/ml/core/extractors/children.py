@@ -1,9 +1,10 @@
 import logging
 from typing import Iterable, Tuple
 
-from sourced.ml.algorithms import Uast2QuantizedChildren
-from sourced.ml.extractors import (
-    BagsExtractor, filter_kwargs, get_names_from_kwargs, register_extractor)
+from sourced.ml.core.algorithms.uast_inttypes_to_nodes import Uast2QuantizedChildren
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.extractors.helpers import (filter_kwargs, get_names_from_kwargs,
+                                                register_extractor)
 
 
 @register_extractor

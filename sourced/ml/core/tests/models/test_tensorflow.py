@@ -1,8 +1,8 @@
 import io
 import unittest
 
-from sourced.ml.models.tensorflow import TensorFlowModel
-from sourced.ml.tests import has_tensorflow
+from sourced.ml.core.models.tensorflow import TensorFlowModel
+from sourced.ml.core.tests import has_tensorflow
 
 
 class TensorFlowModelTests(unittest.TestCase):

@@ -1,6 +1,7 @@
-from sourced.ml.algorithms import NoopTokenParser
+from sourced.ml.core.algorithms.token_parser import NoopTokenParser
 from sourced.ml.core.algorithms.uast_ids_to_bag import UastIds2Bag
-from sourced.ml.extractors import BagsExtractor, register_extractor
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.extractors.helpers import register_extractor
 
 
 @register_extractor

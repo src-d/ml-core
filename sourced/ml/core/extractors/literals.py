@@ -2,9 +2,10 @@ import codecs
 from collections import defaultdict
 import os
 
-from sourced.ml.algorithms import uast2sequence, UastIds2Bag
-from sourced.ml.extractors import BagsExtractor, register_extractor
-from sourced.ml.utils import bblfsh_roles
+from sourced.ml.core.algorithms.uast_ids_to_bag import uast2sequence, UastIds2Bag
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.extractors.helpers import register_extractor
+from sourced.ml.core.utils import bblfsh_roles
 
 
 class HashedTokenParser:

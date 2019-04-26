@@ -4,7 +4,7 @@ import subprocess
 import tempfile
 import unittest
 
-from sourced.ml.utils import install_bigartm
+from sourced.ml.core.utils import install_bigartm
 
 
 class BigartmTests(unittest.TestCase):

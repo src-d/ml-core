@@ -2,9 +2,9 @@ from typing import Iterable
 
 import bblfsh
 
-from sourced.ml.algorithms import NoopTokenParser
-from sourced.ml.algorithms import Uast2IdSequence
-from sourced.ml.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.algorithms.token_parser import NoopTokenParser
+from sourced.ml.core.algorithms.uast_to_id_sequence import Uast2IdSequence
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
 
 
 class IdSequenceExtractor(BagsExtractor):

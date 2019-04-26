@@ -2,9 +2,9 @@ import os
 
 from scipy.sparse import vstack
 
-from sourced.ml import extractors
-from sourced.ml.models.bow import BOW
-from sourced.ml.models.model_converters.base import Model2Base
+from sourced.ml.core import extractors
+from sourced.ml.core.models.bow import BOW
+from sourced.ml.core.models.model_converters.base import Model2Base
 
 
 class MergeBOW(Model2Base):

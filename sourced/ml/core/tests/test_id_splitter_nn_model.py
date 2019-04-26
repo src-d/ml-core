@@ -3,13 +3,13 @@ import unittest
 
 import numpy
 
-from sourced.ml.tests import has_tensorflow
+from sourced.ml.core.tests import has_tensorflow
 
 
 class MetricsTests(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_register_metric(self):
-        from sourced.ml.algorithms.id_splitter.nn_model import register_metric, METRICS
+        from sourced.ml.core.algorithms.id_splitter.nn_model import register_metric, METRICS
         fake_metric = "fake metric"
         register_metric(fake_metric)
         self.assertIn(fake_metric, METRICS)
@@ -18,7 +18,7 @@ class MetricsTests(unittest.TestCase):
 
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_raise_register_metric(self):
-        from sourced.ml.algorithms.id_splitter.nn_model import register_metric, METRICS
+        from sourced.ml.core.algorithms.id_splitter.nn_model import register_metric, METRICS
         bad_metric = 1
         with self.assertRaises(AssertionError):
             register_metric(bad_metric)
@@ -27,7 +27,7 @@ class MetricsTests(unittest.TestCase):
 
 class ModelsTests(unittest.TestCase):
     def setUp(self):
-        from sourced.ml.algorithms.id_splitter.nn_model import build_rnn, build_cnn
+        from sourced.ml.core.algorithms.id_splitter.nn_model import build_rnn, build_cnn
         self.n_uniq = len(string.ascii_lowercase)
         self.model_rnn = build_rnn(maxlen=5, units=24, stack=2, rnn_layer="LSTM",
                                    optimizer="Adam", dev0="/cpu:0", dev1="/cpu:0")

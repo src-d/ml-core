@@ -3,7 +3,7 @@ from typing import List
 from modelforge import Model, register_model
 import numpy
 
-from sourced.ml.models.license import DEFAULT_LICENSE
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model

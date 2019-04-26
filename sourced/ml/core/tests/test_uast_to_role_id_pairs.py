@@ -2,8 +2,9 @@ import unittest
 
 from bblfsh import BblfshClient
 
-from sourced.ml.algorithms import NoopTokenParser, Uast2RoleIdPairs
-from sourced.ml.tests.models import SOURCE_PY
+from sourced.ml.core.algorithms import Uast2RoleIdPairs
+from sourced.ml.core.algorithms.token_parser import NoopTokenParser
+from sourced.ml.core.tests.models import SOURCE_PY
 
 
 class Uast2NodesBagTest(unittest.TestCase):

@@ -2,7 +2,7 @@ from modelforge.model import (
     assemble_sparse_matrix, disassemble_sparse_matrix, merge_strings, Model, split_strings)
 from modelforge.models import register_model
 
-from sourced.ml.models.license import DEFAULT_LICENSE
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model

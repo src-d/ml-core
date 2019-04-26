@@ -1,7 +1,7 @@
 import unittest
 
-from sourced.ml.models import Cooccurrences
-import sourced.ml.tests.models as paths
+from sourced.ml.core.models import Cooccurrences
+import sourced.ml.core.tests.models as paths
 
 
 class CooccurrencesTests(unittest.TestCase):

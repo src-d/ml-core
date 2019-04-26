@@ -2,8 +2,8 @@ import os
 import tempfile
 import unittest
 
-from sourced.ml.models import DocumentFrequencies
-from sourced.ml.models.model_converters.merge_df import MergeDocFreq
+from sourced.ml.core.models import DocumentFrequencies
+from sourced.ml.core.models.model_converters.merge_df import MergeDocFreq
 
 
 class Model2BaseTests(unittest.TestCase):

@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 
-from sourced.ml.models.model_converters.base import Model2Base
+from sourced.ml.core.models.model_converters.base import Model2Base
 
 
 class FromModel:

@@ -3,7 +3,7 @@ from typing import Union
 from modelforge import assemble_sparse_matrix, disassemble_sparse_matrix, merge_strings, \
     Model, register_model, split_strings
 
-from sourced.ml.models.license import DEFAULT_LICENSE
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model

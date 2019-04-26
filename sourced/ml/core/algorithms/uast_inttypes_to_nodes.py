@@ -3,7 +3,7 @@ from typing import Iterable, Tuple, Union
 from bblfsh import Node
 import numpy
 
-from sourced.ml.algorithms.uast_to_bag import Uast2BagThroughSingleScan
+from sourced.ml.core.algorithms.uast_to_bag import Uast2BagThroughSingleScan
 
 
 class Uast2QuantizedChildren(Uast2BagThroughSingleScan):

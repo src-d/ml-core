@@ -3,8 +3,8 @@ import unittest
 
 import numpy
 
-from sourced.ml.models import QuantizationLevels
-import sourced.ml.tests.models as paths
+from sourced.ml.core.models import QuantizationLevels
+import sourced.ml.core.tests.models as paths
 
 
 class QuantizationLevelsTests(unittest.TestCase):

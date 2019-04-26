@@ -1,5 +1,5 @@
-from sourced.ml.algorithms import UastSeq2Bag
-from sourced.ml.extractors import (
+from sourced.ml.core.algorithms.uast_struct_to_bag import UastSeq2Bag
+from sourced.ml.core.extractors.helpers import (
     BagsExtractor, filter_kwargs, get_names_from_kwargs, register_extractor)
 
 

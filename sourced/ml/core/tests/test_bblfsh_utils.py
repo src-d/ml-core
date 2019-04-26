@@ -6,7 +6,7 @@ import unittest
 
 import docker.client
 
-from sourced.ml.utils.bblfsh import BBLFSH_VERSION_HIGH, BBLFSH_VERSION_LOW, check_version
+from sourced.ml.core.utils.bblfsh import BBLFSH_VERSION_HIGH, BBLFSH_VERSION_LOW, check_version
 
 
 class BblfshUtilsTests(unittest.TestCase):

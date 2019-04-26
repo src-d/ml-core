@@ -6,7 +6,7 @@ from typing import List, Union
 from modelforge import Model
 from modelforge.progress_bar import progress_bar
 
-from sourced.ml.utils.pickleable_logger import PickleableLogger
+from sourced.ml.core.utils.pickleable_logger import PickleableLogger
 
 
 class Model2Base(PickleableLogger):

@@ -2,8 +2,8 @@ import unittest
 
 from bblfsh import BblfshClient
 
-from sourced.ml.algorithms import Uast2QuantizedChildren
-from sourced.ml.tests.models import SOURCE_PY
+from sourced.ml.core.algorithms import Uast2QuantizedChildren
+from sourced.ml.core.tests.models import SOURCE_PY
 
 
 class Uast2NodesBagTest(unittest.TestCase):

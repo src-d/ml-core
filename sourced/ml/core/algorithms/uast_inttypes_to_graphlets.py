@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import Uast2BagBase
-from sourced.ml.algorithms.uast_struct_to_bag import Node
+from sourced.ml.core.algorithms.uast_struct_to_bag import Node
 
 
 class Uast2GraphletBag(Uast2BagBase):

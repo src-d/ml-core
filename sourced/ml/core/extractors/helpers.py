@@ -2,7 +2,7 @@ import argparse
 import inspect
 from typing import List
 
-from sourced.ml.extractors.bags_extractor import BagsExtractor
+from sourced.ml.core.extractors.bags_extractor import BagsExtractor
 
 __extractors__ = {}
 

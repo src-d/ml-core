@@ -9,8 +9,8 @@ import unittest
 from modelforge import slogging
 import requests
 
-from sourced.ml.tests.test_dump import captured_output
-from sourced.ml.utils.projector import CORSWebServer, present_embeddings, wait, web_server
+from sourced.ml.core.tests.test_dump import captured_output
+from sourced.ml.core.utils.projector import CORSWebServer, present_embeddings, wait, web_server
 
 
 class ProjectorTests(unittest.TestCase):
@@ -37,7 +37,7 @@ class ProjectorTests(unittest.TestCase):
         return attempts, result
 
     def test_web_server(self):
-        with tempfile.TemporaryDirectory(prefix="sourced.ml-test-") as tmpdir:
+        with tempfile.TemporaryDirectory(prefix="sourced.ml.core-test-") as tmpdir:
             os.chdir(tmpdir)
             testfile = "test.txt"
             with open(testfile, "w") as fout:
@@ -74,7 +74,7 @@ class ProjectorTests(unittest.TestCase):
             web_server.stop()
 
     def test_present_embeddings(self):
-        with tempfile.TemporaryDirectory(prefix="sourced.ml-test-") as tmpdir:
+        with tempfile.TemporaryDirectory(prefix="sourced.ml.core-test-") as tmpdir:
             tmpdir = os.path.join(tmpdir, "1", "2")
             present_embeddings(tmpdir, False, ["one", "two"],
                                [(str(i), "x") for i in range(5)],
@@ -96,7 +96,7 @@ class ProjectorTests(unittest.TestCase):
         os.environ["BROWSER"] = ""
 
         try:
-            with tempfile.TemporaryDirectory(prefix="sourced.ml-test-") as tmpdir:
+            with tempfile.TemporaryDirectory(prefix="sourced.ml.core-test-") as tmpdir:
                 with captured_output() as (stdout, _, _):
                     present_embeddings(tmpdir, True, ["one"],
                                        [str(i) for i in range(5)],

@@ -1,8 +1,8 @@
 from io import BytesIO
 import unittest
 
-from sourced.ml.models import DocumentFrequencies
-import sourced.ml.tests.models as paths
+from sourced.ml.core.models import DocumentFrequencies
+import sourced.ml.core.tests.models as paths
 
 
 class DocumentFrequenciesTests(unittest.TestCase):

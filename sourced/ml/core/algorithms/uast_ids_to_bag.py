@@ -2,9 +2,9 @@ from collections import defaultdict, deque
 
 import bblfsh
 
-from sourced.ml.algorithms import NoopTokenParser, TokenParser
-from sourced.ml.algorithms.uast_to_bag import Uast2BagBase
-from sourced.ml.utils import bblfsh_roles
+from sourced.ml.core.algorithms.token_parser import NoopTokenParser, TokenParser
+from sourced.ml.core.algorithms.uast_to_bag import Uast2BagBase
+from sourced.ml.core.utils import bblfsh_roles
 
 
 def uast2sequence(root):

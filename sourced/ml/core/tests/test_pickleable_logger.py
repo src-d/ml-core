@@ -2,7 +2,7 @@ import logging
 import pickle
 import unittest
 
-from sourced.ml.utils import PickleableLogger
+from sourced.ml.core.utils.pickleable_logger import PickleableLogger
 
 
 class TestLogger(PickleableLogger):
