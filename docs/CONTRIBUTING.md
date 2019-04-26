@@ -1,6 +1,7 @@
 # CONTRIBUTING
 
-sourced.ml project is [Apache licensed](license.md) and accepts contributions via GitHub pull requests. This document outlines some of the conventions on development workflow, commit message formatting, contact points, and other resources to make it easier to get your contribution accepted.
+ml-core project is [Apache licensed](LICENSE.md) and accepts contributions via GitHub pull 
+requests. This document outlines some of the conventions on development workflow, commit message formatting, contact points, and other resources to make it easier to get your contribution accepted.
 
 ## Certificate of Origin
 
@@ -14,7 +15,7 @@ This can be done easily using the [`-s`](https://github.com/git/git/blob/b2c150d
 
 The official support channels, for both users and contributors, are:
 
-* GitHub [issues](https://github.com/src-d/ml/issues)\*
+* GitHub [issues](https://github.com/src-d/ml-core/issues)\*
 * Slack: \#machine-learning room in the [source{d} Slack](https://join.slack.com/t/sourced-community/shared_invite/enQtMjc4Njk5MzEyNzM2LTFjNzY4NjEwZGEwMzRiNTM4MzRlMzQ4MmIzZjkwZmZlM2NjODUxZmJjNDI1OTcxNDAyMmZlNmFjODZlNTg0YWM)
 
 \*Before opening a new issue or submitting a new pull request, it's helpful to search the project - it's likely that another user has already reported the issue you're facing, or it's a known issue that we're already aware of.
@@ -28,7 +29,7 @@ Pull Requests \(PRs\) are the main and exclusive way to contribute to the offici
 * The code is formatted according to [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/).
 * If the PR is a bug fix, it has to include a new unit test that fails before the patch is merged.
 * If the PR is a new feature, it has to come with a suite of unit tests, that tests the new functionality.
-* In any case, all the PRs have to pass the personal evaluation of at least one of the [maintainers](maintainers.md).
+* In any case, all the PRs have to pass the personal evaluation of at least one of the [maintainers](MAINTAINERS.md).
 
 ### Format of the commit message
 
