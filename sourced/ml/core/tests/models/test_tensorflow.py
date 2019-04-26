@@ -14,14 +14,15 @@ class TensorFlowModelTests(unittest.TestCase):
         c = tf.matmul(a, b)
         gd = tf.get_default_graph().as_graph_def()
         buffer = io.BytesIO()
-        TensorFlowModel().construct(graphdef=gd).save(buffer)
+        TensorFlowModel().construct(graphdef=gd).save(buffer, series="tensorflow-model")
         buffer.seek(0)
         model = TensorFlowModel().load(buffer)
         self.assertEqual(gd.node, model.graphdef.node)
 
         buffer = io.BytesIO()
         with tf.Session() as session:
-            TensorFlowModel().construct(session=session, outputs=[c.name[:-2]]).save(buffer)
+            TensorFlowModel().construct(session=session, outputs=[c.name[:-2]]).save(
+                buffer, series="tensorflow-model")
         buffer.seek(0)
         model = TensorFlowModel().load(buffer)
         self.assertEqual(gd.node, model.graphdef.node)
