@@ -1,10 +1,11 @@
 import string
+import tempfile
 import unittest
 
 import numpy
 
 from sourced.ml.core.tests import has_tensorflow
-
+from sourced.ml.tests.models import ID_SPLITTER_RNN
 
 class MetricsTests(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
