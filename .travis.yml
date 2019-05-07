@@ -9,6 +9,9 @@ before_cache:
 stages:
   - style
   - test
+  - name: deploy
+    # require any tag name
+    if: tag =~ .*
 _install: &_install
   - travis_retry make bblfsh-start
   - pip install --upgrade pip cython codecov
@@ -48,5 +51,25 @@ matrix:
         - make docker-test VERSION=test
       install:
         - travis_retry make bblfsh-start
+    - stage: deploy
+      python: 3.5
+      install:
+        - pip3 install --upgrade pip
+        - pip3 install twine pyopenssl
+      before_script: skip
+      script:
+        - test $(python3 setup.py --version) == $TRAVIS_TAG
+        - python3 setup.py bdist_wheel
+      deploy:
+        provider: script
+        script: twine upload dist/*py3-none-any* -u $PYPI_LOGIN -p $PYPI_PASS
+        skip_cleanup: true
+        on:
+          tags: true
+    - name: 'Push image to Docker Hub'
+      python: 3.5
+      stage: deploy
+      script:
+        - DOCKER_PUSH_LATEST=true make docker-push
 notifications:
   email: false
