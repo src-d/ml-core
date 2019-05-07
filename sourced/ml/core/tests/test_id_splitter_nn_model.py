@@ -52,6 +52,24 @@ class ModelsTests(unittest.TestCase):
         self.assertEqual(self.model_cnn.get_weights()[0].shape, (self.n_uniq+1, self.n_uniq+1))
         self.assertTrue(self.model_cnn.uses_learning_phase)
 
+@unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
+class NNModelTest(unittest.TestCase):
+    def setUp(self):
+        from sourced.ml.models.id_splitter import IdentifierSplitterNN
+        self.test_X = ["networkSocket", "variablename", "loadfile", "blahblah", "foobar"]
+        self.test_y = ["network", "socket", "variable",
+                       "name", "load", "file", "blah", "blah", "foobar"]
+        self.id_splitter = IdentifierSplitterNN()
+        self.id_splitter.load(ID_SPLITTER_RNN)
+
+    def test_load_and_run_model(self):
+        self.assertEqual(self.id_splitter.split(self.test_X), self.test_y)
+
+    def test_save_model(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            self.id_splitter.save(tmpdir + "/model.asdf", series="id-splitter-nn")
+            self.id_splitter.load(tmpdir + "/model.asdf")
+        self.assertEqual(self.id_splitter.split(self.test_X), self.test_y)
 
 if __name__ == "__main__":
     unittest.main()
