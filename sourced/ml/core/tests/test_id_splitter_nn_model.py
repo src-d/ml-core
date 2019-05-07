@@ -3,9 +3,10 @@ import tempfile
 import unittest
 
 import numpy
+from sourced.ml.tests.models import ID_SPLITTER_RNN
 
 from sourced.ml.core.tests import has_tensorflow
-from sourced.ml.tests.models import ID_SPLITTER_RNN
+
 
 class MetricsTests(unittest.TestCase):
     @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
@@ -52,6 +53,7 @@ class ModelsTests(unittest.TestCase):
         self.assertEqual(self.model_cnn.get_weights()[0].shape, (self.n_uniq+1, self.n_uniq+1))
         self.assertTrue(self.model_cnn.uses_learning_phase)
 
+
 @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
 class NNModelTest(unittest.TestCase):
     def setUp(self):
@@ -70,6 +72,7 @@ class NNModelTest(unittest.TestCase):
             self.id_splitter.save(tmpdir + "/model.asdf", series="id-splitter-nn")
             self.id_splitter.load(tmpdir + "/model.asdf")
         self.assertEqual(self.id_splitter.split(self.test_X), self.test_y)
+
 
 if __name__ == "__main__":
     unittest.main()
