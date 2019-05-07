@@ -6,9 +6,10 @@ import keras
 from keras.preprocessing.sequence import pad_sequences
 from modelforge import Model, register_model
 import numpy
-from sourced.ml.algorithms.id_splitter.nn_model import (f1score, precision,
-                                                        recall)
-from sourced.ml.models.license import DEFAULT_LICENSE
+
+from sourced.ml.core.algorithms.id_splitter.nn_model import (f1score, precision,
+                                                             recall)
+from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model
