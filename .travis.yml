@@ -25,24 +25,24 @@ matrix:
   fast_finish: true
   include:
     - stage: style
-      name: 'Check code style'
+      name: "Check code style"
       python: 3.7
       script:
         - make check
       install:
         - pip install -r requirements-lint.txt
     - stage: test
-      name: 'Test Python 3.5'
+      name: "Test Python 3.5"
       python: 3.5
       script: *_coverage
       install: *_install
     - stage: test
-      name: 'Test Python 3.6'
+      name: "Test Python 3.6"
       python: 3.6
       script: *_coverage
       install: *_install
     - stage: test
-      name: 'Test Python 3.7'
+      name: "Test Python 3.7"
       python: 3.7
       script: *_coverage
       install: *_install
@@ -63,7 +63,7 @@ matrix:
       install:
         - travis_retry make bblfsh-start
     - stage: deploy
-      name: 'Upload package to Pypi'
+      name: "Upload package to Pypi"
       python: 3.5
       install:
         - pip3 install --upgrade pip
@@ -78,7 +78,7 @@ matrix:
         skip_cleanup: true
         on:
           tags: true
-    - name: 'Push image to Docker Hub'
+    - name: "Push image to Docker Hub"
       python: 3.5
       stage: deploy
       script:
