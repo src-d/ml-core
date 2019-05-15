@@ -2,10 +2,10 @@ import logging
 import string
 from typing import List, Sequence, Tuple
 
-import keras
-from keras.preprocessing.sequence import pad_sequences
 from modelforge import Model, register_model
 import numpy
+from tensorflow import keras
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 from sourced.ml.core.algorithms.id_splitter.nn_model import (f1score, precision,
                                                              recall)
@@ -13,28 +13,42 @@ from sourced.ml.core.models.license import DEFAULT_LICENSE
 
 
 @register_model
-class IdentifierSplitterNN(Model):
+class IdentifierSplitterBiLSTM(Model):
     """
     Bi-Directionnal LSTM Model. Splits identifiers without need for a conventional pattern.
+    Reference: https://arxiv.org/abs/1805.11651
     """
-    NAME = "id_splitter_nn"
+    NAME = "id_splitter_bilstm"
     VENDOR = "source{d}"
     DESCRIPTION = "Weights of the BiLSTM network to split source code identifiers."
     LICENSE = DEFAULT_LICENSE
 
     DEFAULT_MAXLEN = 40
     DEFAULT_PADDING = "post"
-    DEFAULT_MAPPING = None
+    DEFAULT_MAPPING = {c: i for i, c in enumerate(string.ascii_lowercase, start=1)}
+    DEFAULT_BATCH_SIZE = 4096
 
     def construct(self, model: "keras.models.Model",
                   maxlen: int = DEFAULT_MAXLEN,
                   padding: str = DEFAULT_PADDING,
-                  mapping: dict = DEFAULT_MAPPING) -> "IdentifierSplitterNN":
+                  mapping: dict = DEFAULT_MAPPING,
+                  batch_size: int = DEFAULT_BATCH_SIZE) -> "IdentifierSplitterNN":
+        """
+        :param model: keras model used for identifier splitting.
+        :param maxlen: maximum length of input identifers.
+        :param padding: where to pad the identifiers of length < maxlen. Can be "left" or "right".
+        :param mapping: { str: int } mapping of characters to integers.
+        :param batch_size: batch size of input data fed to the model.
+        :return: BiLSTM based source code identifier splitter.
+        """
 
         self._maxlen = maxlen
         self._padding = padding
         self._mapping = mapping
         self._model = model
+        self._batch_size = batch_size
+        self._log = logging.getLogger("IdentifierSplitterBiLSTM")
+
         return self
 
     @property
@@ -44,37 +58,36 @@ class IdentifierSplitterNN(Model):
         """
         return self._model
 
-    def clear_keras(self):
+    @property
+    def batch_size(self) -> int:
         """
-        Clears the keras session used to run the model
+        Returns the batch size used to run the model
         """
-        keras.backend.clear_session()
+        return self._batch_size
 
     def _generate_tree(self) -> dict:
         return {
             "config": self._model.get_config(),
             "weights": self._model.get_weights(),
             "mapping": self._mapping,
+            "maxlen": self._maxlen,
+            "padding": self._padding,
             }
 
     def _load_tree(self, tree: dict):
         model = keras.models.Model.from_config(tree["config"])
         model.set_weights(tree["weights"])
-        if "mapping" in tree:
-            self.construct(model, mapping=tree["mapping"])
-        else:
-            self.construct(model)
+        self.construct(model, maxlen=tree["maxlen"],
+                       padding=tree["padding"], mapping=tree["mapping"])
 
     def _prepare_single_identifier(self, identifier: str) -> Tuple[numpy.array, str]:
-        if self._mapping is None:
-            self._mapping = {c: i for i, c in enumerate(string.ascii_lowercase, start=1)}
 
         # Clean identifier
         clean_id = "".join(char for char in identifier.lower() if char in self._mapping)
         if len(clean_id) > self._maxlen:
             clean_id = clean_id[:self._maxlen]
-        logging.info("Preprocessed identifier: {}".format(clean_id))
-        return numpy.array([self._mapping[c] for c in clean_id], dtype="int8"), clean_id
+        self._log.debug("Preprocessed identifier: %s : %s" % (identifier, clean_id))
+        return numpy.array([self._mapping[c] for c in clean_id]), clean_id
 
     def prepare_input(self, identifiers: Sequence[str]) -> Tuple[numpy.array, List[str]]:
         """
@@ -104,7 +117,7 @@ class IdentifierSplitterNN(Model):
         Splits a lists of identifiers using the model.
         """
         feats, clean_ids = self.prepare_input(identifiers)
-        output = self._model.predict(feats, batch_size=4096)
+        output = self._model.predict(feats, batch_size=self._batch_size)
         output = numpy.round(output)[:, :, 0]
         splitted_ids = []
         for clean_id, id_output in zip(clean_ids, output):
@@ -116,6 +129,3 @@ class IdentifierSplitterNN(Model):
                 splitted_id += char
             splitted_ids.append(splitted_id)
         return splitted_ids
-
-    def __del__(self):
-        self.clear_keras()
