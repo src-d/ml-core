@@ -32,6 +32,7 @@ setup(
     url="https://github.com/src-d/ml-core",
     download_url="https://github.com/src-d/ml-core",
     packages=find_packages(exclude=exclude_packages),
+    namespace_packages=["sourced", "sourced.ml"],
     keywords=[
         "machine learning on source code",
         "word2vec",
