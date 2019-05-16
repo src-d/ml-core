@@ -3,7 +3,7 @@
  [![Code coverage](https://codecov.io/github/src-d/ml-core/coverage.svg)](https://codecov.io/github/src-d/ml-core)
  [![Read the Docs](https://img.shields.io/readthedocs/ml-core.svg)](https://readthedocs.org/projects/ml-core/)
 [![Docker build status](https://img.shields.io/docker/build/srcd/ml-core.svg)](https://hub.docker.com/r/srcd/ml-core)
-[![PyPi package status](https://img.shields.io/pypi/v/srcd-ml-core.svg)](https://pypi.python.org/pypi/srcd-ml-core)
+[![PyPi package status](https://img.shields.io/pypi/v/sourced-ml-core.svg)](https://pypi.python.org/pypi/sourced-ml-core)
 ![stability: alpha](https://svg-badge.appspot.com/badge/stability/alpha?color=f47142)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
