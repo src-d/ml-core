@@ -48,7 +48,7 @@ class TokenParserTests(unittest.TestCase):
             ("A.b.Cd.E", ["a", "b", "cd", "e"]),
             ("looong_sh_loooong_sh", ["looong", "looongsh", "loooong", "shloooong", "loooongsh"]),
             ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
-            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"])
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
         ]
 
         for token, correct in tokens:
@@ -138,7 +138,7 @@ class TokenParserTests(unittest.TestCase):
             ("A.b.Cd.E", ["a", "b", "cd", "e"]),
             ("looong_sh_loooong_sh", ["looong", "sh", "loooong", "sh"]),
             ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
-            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"])
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
         ]
 
         for token, correct in tokens:

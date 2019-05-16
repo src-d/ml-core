@@ -131,7 +131,7 @@ def count_matrix_input(filenames, submatrix_rows, submatrix_cols):
             "global_col": tf.FixedLenFeature([submatrix_cols], dtype=tf.int64),
             "sparse_local_row": tf.VarLenFeature(dtype=tf.int64),
             "sparse_local_col": tf.VarLenFeature(dtype=tf.int64),
-            "sparse_value": tf.VarLenFeature(dtype=tf.float32)
+            "sparse_value": tf.VarLenFeature(dtype=tf.float32),
         })
 
     global_row = features["global_row"]
