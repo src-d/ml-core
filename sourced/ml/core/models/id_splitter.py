@@ -1,6 +1,6 @@
 import logging
 import string
-from typing import List, Sequence, Tuple
+from typing import Dict, List, Sequence, Tuple
 
 from modelforge import Model, register_model
 import numpy
@@ -15,7 +15,7 @@ from sourced.ml.core.models.license import DEFAULT_LICENSE
 @register_model
 class IdentifierSplitterBiLSTM(Model):
     """
-    Bi-Directionnal LSTM Model. Splits identifiers without need for a conventional pattern.
+    Bidirectionnal LSTM Model. Splits identifiers without need for a conventional pattern.
     Reference: https://arxiv.org/abs/1805.11651
     """
     NAME = "id_splitter_bilstm"
@@ -31,13 +31,13 @@ class IdentifierSplitterBiLSTM(Model):
     def construct(self, model: "keras.models.Model",
                   maxlen: int = DEFAULT_MAXLEN,
                   padding: str = DEFAULT_PADDING,
-                  mapping: dict = DEFAULT_MAPPING,
-                  batch_size: int = DEFAULT_BATCH_SIZE) -> "IdentifierSplitterNN":
+                  mapping: Dict[str, int] = DEFAULT_MAPPING,
+                  batch_size: int = DEFAULT_BATCH_SIZE) -> "IdentifierSplitterBiLSTM":
         """
         :param model: keras model used for identifier splitting.
         :param maxlen: maximum length of input identifers.
         :param padding: where to pad the identifiers of length < maxlen. Can be "left" or "right".
-        :param mapping: { str: int } mapping of characters to integers.
+        :param mapping: mapping of characters to integers.
         :param batch_size: batch size of input data fed to the model.
         :return: BiLSTM based source code identifier splitter.
         """
@@ -81,7 +81,6 @@ class IdentifierSplitterBiLSTM(Model):
                        padding=tree["padding"], mapping=tree["mapping"])
 
     def _prepare_single_identifier(self, identifier: str) -> Tuple[numpy.array, str]:
-
         # Clean identifier
         clean_id = "".join(char for char in identifier.lower() if char in self._mapping)
         if len(clean_id) > self._maxlen:
@@ -91,7 +90,7 @@ class IdentifierSplitterBiLSTM(Model):
 
     def prepare_input(self, identifiers: Sequence[str]) -> Tuple[numpy.array, List[str]]:
         """
-        Prepares input by converting a sequence of identifiers to the corresponding
+        Prepare input by converting a sequence of identifiers to the corresponding
         ascii code 2D-array and the list of lowercase cleaned identifiers.
         """
         processed_ids = []
