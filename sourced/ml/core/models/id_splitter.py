@@ -1,4 +1,3 @@
-import logging
 import string
 from typing import Dict, List, Sequence, Tuple
 
@@ -15,7 +14,7 @@ from sourced.ml.core.models.license import DEFAULT_LICENSE
 @register_model
 class IdentifierSplitterBiLSTM(Model):
     """
-    Bidirectionnal LSTM Model. Splits identifiers without need for a conventional pattern.
+    Bidirectional LSTM Model. Splits identifiers without need for a conventional pattern.
     Reference: https://arxiv.org/abs/1805.11651
     """
     NAME = "id_splitter_bilstm"
@@ -27,6 +26,14 @@ class IdentifierSplitterBiLSTM(Model):
     DEFAULT_PADDING = "post"
     DEFAULT_MAPPING = {c: i for i, c in enumerate(string.ascii_lowercase, start=1)}
     DEFAULT_BATCH_SIZE = 4096
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._maxlen = self.DEFAULT_MAXLEN
+        self._padding = self.DEFAULT_PADDING
+        self._mapping = self.DEFAULT_MAPPING
+        self._model = None
+        self._batch_size = self.DEFAULT_BATCH_SIZE
 
     def construct(self, model: "keras.models.Model",
                   maxlen: int = DEFAULT_MAXLEN,
@@ -47,7 +54,6 @@ class IdentifierSplitterBiLSTM(Model):
         self._mapping = mapping
         self._model = model
         self._batch_size = batch_size
-        self._log = logging.getLogger("IdentifierSplitterBiLSTM")
 
         return self
 
