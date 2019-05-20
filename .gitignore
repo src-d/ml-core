@@ -114,3 +114,5 @@ ENV/
 
 # CI
 .ci
+
+.vscode
