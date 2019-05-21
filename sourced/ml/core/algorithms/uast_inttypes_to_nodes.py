@@ -17,9 +17,11 @@ class Uast2QuantizedChildren(Uast2BagThroughSingleScan):
 
     def node2key(self, node: Node) -> Union[str, Tuple[str, int]]:
         """
+        Return the key for a given Node.
+
         :param node: a node in UAST.
         :return: The string which consists of the internal type of the node and its number of
-        children.
+            children.
         """
         if not self.levels:
             return node.internal_type, len(node.children)
@@ -33,9 +35,10 @@ class Uast2QuantizedChildren(Uast2BagThroughSingleScan):
 
     def quantize_unwrapped(self, children_freq: Iterable[Tuple[int, int]]) -> numpy.ndarray:
         """
-        Builds the quantization partition P that is a vector of length nb_partitions \
+        Builds the quantization partition P that is a vector of length nb_partitions
         whose entries are in strictly ascending order.
         Quantization of x is defined as:
+
             0 if x <= P[0]
             m if P[m-1] < x <= P[m]
             n if P[n] <= x
