@@ -21,9 +21,10 @@ class DocumentFrequencies(Model):
     def construct(self, docs: int, tokfreqs: Union[Iterable[Dict[str, int]], Dict[str, int]]):
         """
         Initializes this model.
+
         :param docs: The number of documents.
         :param tokfreqs: The dictionary of token -> frequency or the iterable collection of such
-                         dictionaries.
+            dictionaries.
         :return: self
         """
         if isinstance(tokfreqs, dict):

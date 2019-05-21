@@ -52,7 +52,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "sourced.ml.core"
-copyright = "2017, source{d}"
+copyright = "2017-2019, source{d}"
 author = "Vadim Markovtsev"
 
 # The version info for the project you're documenting, acts as replacement for
