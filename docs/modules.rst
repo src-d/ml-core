@@ -1,7 +1,7 @@
-sourced.ml.core documentation
+ML-Core documentation
 =============================
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 2
 
-   sourced.ml.core
+   autoapi/sourced/ml/core/index
