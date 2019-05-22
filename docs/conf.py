@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
+    "autoapi.extension",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -164,6 +165,12 @@ texinfo_documents = [
 ]
 
 autodoc_default_flags = ["members", "undoc-members", "show-inheritance"]
+
+autoapi_type = "python"
+autoapi_dirs = ["../sourced/ml/core"]
+autoapi_ignore = ["*tests*", "*api*"]
+autoapi_options = ["members", "undoc-members"]
+autoapi_add_toctree_entry = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.6", None),
