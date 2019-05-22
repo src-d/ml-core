@@ -49,7 +49,7 @@ setup(
         "modelforge>=0.12.1,<0.13",
         "pygments>=2.2.0,<3.0",
         "keras>=2.0,<3.0",
-        "scikit-learn>=0.19,<1.0",
+        "scikit-learn>=0.21.1,<1.0",
         "tqdm>=4.20,<5.0",
     ],
     extras_require={"tf": tf_requires, "tf_gpu": tf_gpu_requires},
