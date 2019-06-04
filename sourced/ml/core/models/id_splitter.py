@@ -117,20 +117,22 @@ class IdentifierSplitterBiLSTM(Model):
                                                                     "recall": recall,
                                                                     "f1score": f1score})
 
-    def split(self, identifiers: Sequence[str]) -> List[str]:
+    def split(self, identifiers: Sequence[str]) -> List[List[str]]:
         """
         Splits a lists of identifiers using the model.
         """
         feats, clean_ids = self.prepare_input(identifiers)
         output = self._model.predict(feats, batch_size=self._batch_size)
         output = numpy.round(output)[:, :, 0]
-        splitted_ids = []
+        split_ids = []
         for clean_id, id_output in zip(clean_ids, output):
-            splitted_id = ""
+            identifier_tokens = []
+            token = ""
             for char, label in zip(clean_id, id_output):
                 if label == 1:
-                    splitted_ids.append(splitted_id)
-                    splitted_id = ""
-                splitted_id += char
-            splitted_ids.append(splitted_id)
-        return splitted_ids
+                    identifier_tokens.append(token)
+                    token = ""
+                token += char
+            identifier_tokens.append(token)
+            split_ids.append(identifier_tokens)
+        return split_ids
