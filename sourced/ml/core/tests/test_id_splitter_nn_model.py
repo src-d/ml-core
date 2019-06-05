@@ -59,8 +59,8 @@ class NNModelTest(unittest.TestCase):
     def setUp(self):
         from sourced.ml.core.models.id_splitter import IdentifierSplitterBiLSTM
         self.test_X = ["networkSocket", "variablename", "loadfile", "blahblah", "foobar"]
-        self.test_y = ["network", "socket", "variable",
-                       "name", "load", "file", "blah", "blah", "foobar"]
+        self.test_y = [["network", "socket"], ["variable", "name"],
+                       ["load", "file"], ["blah", "blah"], ["foobar"]]
         self.id_splitter = IdentifierSplitterBiLSTM()
         self.id_splitter.load(ID_SPLITTER_BILSTM)
 
