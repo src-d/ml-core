@@ -35,39 +35,39 @@ class IdentifierSplitterBiLSTM(Model):
         self._model = None
         self._batch_size = self.DEFAULT_BATCH_SIZE
 
-    def construct(self, model: "keras.models.Model",
+    def construct(self, model: keras.models.Model,
                   maxlen: int = DEFAULT_MAXLEN,
                   padding: str = DEFAULT_PADDING,
                   mapping: Dict[str, int] = DEFAULT_MAPPING,
                   batch_size: int = DEFAULT_BATCH_SIZE) -> "IdentifierSplitterBiLSTM":
         """
+        Construct IdentifierSplitterBiLSTM model.
+
         :param model: keras model used for identifier splitting.
-        :param maxlen: maximum length of input identifers.
-        :param padding: where to pad the identifiers of length < maxlen. Can be "left" or "right".
-        :param mapping: mapping of characters to integers.
-        :param batch_size: batch size of input data fed to the model.
+        :param maxlen: Maximum length of input identifers.
+        :param padding: Where to pad the identifiers of length < maxlen. Can be "left" or "right".
+        :param mapping: Mapping of characters to integers.
+        :param batch_size: Batch size of input data fed to the model.
         :return: BiLSTM based source code identifier splitter.
         """
-
         self._maxlen = maxlen
         self._padding = padding
         self._mapping = mapping
         self._model = model
         self._batch_size = batch_size
-
         return self
 
     @property
     def model(self) -> "keras.models.Model":
         """
-        Returns the wrapped keras model.
+        Return the wrapped keras model.
         """
         return self._model
 
     @property
     def batch_size(self) -> int:
         """
-        Returns the batch size used to run the model
+        Return the batch size used to run the model.
         """
         return self._batch_size
 
@@ -80,11 +80,15 @@ class IdentifierSplitterBiLSTM(Model):
             "padding": self._padding,
             }
 
-    def _load_tree(self, tree: dict):
+    def _load_tree(self, tree: dict) -> None:
         model = keras.models.Model.from_config(tree["config"])
         model.set_weights(tree["weights"])
         self.construct(model, maxlen=tree["maxlen"],
                        padding=tree["padding"], mapping=tree["mapping"])
+
+    def dump(self) -> str:
+        return "BiLSTM identifier splitter with %d maxlen and %d batch size" % (self._maxlen,
+                                                                                self._batch_size)
 
     def _prepare_single_identifier(self, identifier: str) -> Tuple[numpy.array, str]:
         # Clean identifier
@@ -96,7 +100,7 @@ class IdentifierSplitterBiLSTM(Model):
 
     def prepare_input(self, identifiers: Sequence[str]) -> Tuple[numpy.array, List[str]]:
         """
-        Prepare input by converting a sequence of identifiers to the corresponding
+        Prepare input by converting a sequence of identifiers to the corresponding \
         ascii code 2D-array and the list of lowercase cleaned identifiers.
         """
         processed_ids = []
@@ -111,7 +115,7 @@ class IdentifierSplitterBiLSTM(Model):
 
     def load_model_file(self, path: str):
         """
-        Loads a compatible Keras model file. Used for compatibility.
+        Load a compatible Keras model file. Used for compatibility.
         """
         self._model = keras.models.load_model(path, custom_objects={"precision": precision,
                                                                     "recall": recall,
@@ -119,7 +123,7 @@ class IdentifierSplitterBiLSTM(Model):
 
     def split(self, identifiers: Sequence[str]) -> List[List[str]]:
         """
-        Splits a lists of identifiers using the model.
+        Split identifiers in a list, using the model.
         """
         feats, clean_ids = self.prepare_input(identifiers)
         output = self._model.predict(feats, batch_size=self._batch_size)
