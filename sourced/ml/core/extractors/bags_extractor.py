@@ -1,4 +1,4 @@
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser
 from sourced.ml.core.algorithms.uast_to_role_id_pairs import Uast2RoleIdPairs

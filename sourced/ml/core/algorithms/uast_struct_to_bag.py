@@ -2,6 +2,7 @@ from collections import defaultdict
 import random
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import FakeVocabulary, Uast2BagBase, uast2sequence
+from sourced.ml.core.utils.bblfsh import iterate_children
 
 
 class Uast2StructBagBase(Uast2BagBase):
@@ -38,7 +39,7 @@ class UastSeq2Bag(Uast2StructBagBase):
 
     def __call__(self, uast):
         bag = defaultdict(int)
-        node_sequence = uast2sequence(uast)
+        node_sequence = iterate_children(uast2sequence(uast))
 
         # convert to str - requirement from wmhash.BagsExtractor
         node_sequence = [self.node2index[n] for n in node_sequence]
@@ -118,9 +119,11 @@ class Uast2RandomWalks:
         stack = [(root, uast)]
         while stack:
             parent, parent_uast = stack.pop()
-            children_nodes = [self._extract_node(child, parent) for child in parent_uast.children]
+            children = iterate_children(parent_uast.children)
+            children_nodes = [self._extract_node(child, parent) for child in children]
             parent.children = children_nodes
-            stack.extend(zip(children_nodes, parent_uast.children))
+            children = iterate_children(parent_uast.children)
+            stack.extend(zip(children_nodes, children))
             starting_nodes.append(parent)
 
         return starting_nodes

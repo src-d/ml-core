@@ -1,10 +1,11 @@
 from itertools import combinations
 from typing import Iterable, Tuple, Union
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import UastIds2Bag
 from sourced.ml.core.utils import bblfsh_roles
+from sourced.ml.core.utils.bblfsh import get_node_start_line, get_node_tokens, iterate_children
 
 
 class Uast2IdDistance(UastIds2Bag):
@@ -59,12 +60,13 @@ class Uast2IdDistance(UastIds2Bag):
         raise NotImplementedError
 
     def _process_point(self, node, info):
-        if bblfsh_roles.IDENTIFIER in node.roles and node.token:
-            for sub in self._token_parser.process_token(node.token):
-                try:
-                    yield (self._token2index[sub], info)
-                except KeyError:
-                    continue
+        if bblfsh_roles.IDENTIFIER in node.roles:
+            for token in get_node_tokens(node):
+                for sub in self._token_parser.process_token(token):
+                    try:
+                        yield (self._token2index[sub], info)
+                    except KeyError:
+                        continue
 
 
 class Uast2IdTreeDistance(Uast2IdDistance):
@@ -80,7 +82,7 @@ class Uast2IdTreeDistance(Uast2IdDistance):
             yield from self._process_point(node, ancestors)
             ancestors = list(ancestors)
             ancestors.append(node)
-            stack.extend([(child, ancestors) for child in node.children])
+            stack.extend([(child, ancestors) for child in iterate_children(node.children)])
 
     def distance(self, point1, point2) -> int:
         i = 0
@@ -108,15 +110,18 @@ class Uast2IdLineDistance(Uast2IdDistance):
         stack = [(uast, [0, 0])]
         while stack:
             node, last_position = stack.pop()
-            if node.start_position.line != 0:
+            start_line = get_node_start_line(node).get("line")
+            if start_line is not None and start_line != 0:
                 # A lot of Nodes do not have position
                 # It is good heuristic to take the last Node in tree with a position.
-                last_position[0] = node.start_position.line
+                last_position[0] = start_line
                 last_position[1] = 0
-            if node.start_position.col != 0:
-                last_position[1] = node.start_position.col
+            start_col = get_node_start_line(node).get("col")
+            if start_col is not None and start_col != 0:
+                last_position[1] = start_col
             yield from self._process_point(node, last_position)
-            stack.extend([(child, list(last_position)) for child in node.children])
+            stack.extend([(child, list(last_position)) for child in
+                          iterate_children(node.children)])
 
     def distance(self, point1, point2):
         return abs(point1[1][0] - point2[1][0])  # subtract line numbers

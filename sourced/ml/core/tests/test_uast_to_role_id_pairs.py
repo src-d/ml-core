@@ -35,7 +35,8 @@ class Uast2NodesBagTest(unittest.TestCase):
                    ("utmain", "FILE | MODULE"),
                    ("utmain", "STATEMENT | INCOMPLETE")]
         res = sorted(self.uast2role_id_pairs(self.uast))
-        self.assertEqual(res, correct)
+        self.assertEqual(set(res), set(correct), "\n\nReturned elements: %s" % set(res))
+        self.assertEqual(res, correct, res)
 
 
 if __name__ == "__main__":

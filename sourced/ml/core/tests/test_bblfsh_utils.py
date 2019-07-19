@@ -65,20 +65,20 @@ class BblfshUtilsTests(unittest.TestCase):
         self.assertFalse(self.__check_bblfsh_version_support("v2.1.0"), self.er_msg)
 
     def test_v220(self):
-        self.assertTrue(self.__check_bblfsh_version_support("v2.2.0"), self.er_msg)
+        self.assertFalse(self.__check_bblfsh_version_support("v2.2.0"), self.er_msg)
 
     def test_v230(self):
-        self.assertTrue(self.__check_bblfsh_version_support("v2.3.0"), self.er_msg)
+        self.assertFalse(self.__check_bblfsh_version_support("v2.3.0"), self.er_msg)
 
     def test_v240(self):
-        self.assertTrue(self.__check_bblfsh_version_support("v2.4.0"), self.er_msg)
+        self.assertFalse(self.__check_bblfsh_version_support("v2.4.0"), self.er_msg)
 
     def test_v250(self):
-        self.assertTrue(self.__check_bblfsh_version_support("v2.5.0"), self.er_msg)
+        self.assertFalse(self.__check_bblfsh_version_support("v2.5.0"), self.er_msg)
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.docker_client.close()
+    # @classmethod
+    # def tearDownClass(cls):
+    #     cls.docker_client.close()
 
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
 from typing import Iterable, Tuple
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import UastIds2Bag
 from sourced.ml.core.utils import bblfsh_roles
+from sourced.ml.core.utils.bblfsh import get_node_tokens, iterate_children
 
 
 class Uast2RoleIdPairs(UastIds2Bag):
@@ -46,7 +47,7 @@ class Uast2RoleIdPairs(UastIds2Bag):
         while stack:
             node, ancestors = stack.pop()
 
-            if bblfsh_roles.IDENTIFIER in node.roles and node.token:
+            if bblfsh_roles.IDENTIFIER in node.roles and len(list(get_node_tokens(node))) > 0:
                 roles = set(node.roles)
                 indx = -1
                 # We skip all Nodes with roles from `self.exclude_roles` set.
@@ -55,15 +56,16 @@ class Uast2RoleIdPairs(UastIds2Bag):
                 while not (roles - self.exclude_roles and bblfsh_roles.OPERATOR not in roles):
                     roles = set(ancestors[indx].roles)
                     indx -= 1
-                for sub in self._token_parser.process_token(node.token):
-                    try:
-                        yield (self._token2index[sub], self.merge_roles(roles))
-                    except KeyError:
-                        continue
+                for token in get_node_tokens(node):
+                    for sub in self._token_parser.process_token(token):
+                        try:
+                            yield (self._token2index[sub], self.merge_roles(roles))
+                        except KeyError:
+                            continue
             ancestors = list(ancestors)
             ancestors.append(node)
-            stack.extend([(child, ancestors) for child in node.children])
+            stack.extend([(child, ancestors) for child in iterate_children(node.children)])
 
     @staticmethod
     def merge_roles(roles: Iterable[int]):
-        return " | ".join(bblfsh.role_name(r) for r in sorted(roles))
+        return " | ".join([r for r in sorted(roles)])

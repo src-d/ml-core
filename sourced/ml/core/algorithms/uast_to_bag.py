@@ -1,14 +1,16 @@
 from collections import defaultdict
 from typing import Dict
 
-from bblfsh import Node
+import bblfsh.compat as bblfsh
+
+from sourced.ml.core.utils.bblfsh import iterate_children
 
 
 class Uast2BagBase:
     """
     Base class to convert UAST to a bag of anything.
     """
-    def __call__(self, uast: Node):
+    def __call__(self, uast: bblfsh.Node):
         """
         Inheritors must implement this function.
 
@@ -21,12 +23,12 @@ class Uast2BagThroughSingleScan(Uast2BagBase):
     """
     Constructs the bag by doing a single tree traversal and turning every node into a string.
     """
-    def __call__(self, uast: Node) -> Dict[str, int]:
+    def __call__(self, uast: bblfsh.Node) -> Dict[str, int]:
         result = defaultdict(int)
         stack = [uast]
         while stack:
             node = stack.pop()
-            stack.extend(node.children)
+            stack.extend(iterate_children(node.children))
             result[self.node2key(node)] += 1
         return result
 

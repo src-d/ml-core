@@ -49,7 +49,8 @@ class Uast2IdTreeDistanceTest(unittest.TestCase):
                    (("utmain", "sys"), 3)]
 
         res = sorted(self.uast2role_id_pairs(self.uast))
-        self.assertEqual(res, correct)
+        self.assertEqual(set(res), set(correct), "\n\nReturned elements: %s" % set(res))
+        self.assertEqual(res, correct, "\n\nReturned elements: %s" % res)
 
 
 class Uast2IdLineDistanceTest(unittest.TestCase):
@@ -131,7 +132,8 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
                    (("utmain", "sys"), 1)]
 
         res = sorted(self.uast2role_id_pairs(self.uast))
-        self.assertEqual(res, correct)
+        self.assertEqual(set(res), set(correct), "\n\nReturned elements: %s" % set(res))
+        self.assertEqual(res, correct, "\n\nReturned elements: %s" % res)
 
 
 if __name__ == "__main__":

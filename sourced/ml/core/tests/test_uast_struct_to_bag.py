@@ -1,9 +1,10 @@
 import unittest
 
-from bblfsh import BblfshClient
+from bblfsh.compat import CompatBblfshClient as BblfshClient
 
 from sourced.ml.core.algorithms import UastRandomWalk2Bag, UastSeq2Bag
 from sourced.ml.core.tests.models import SOURCE_PY
+from sourced.ml.core.utils.bblfsh import iterate_children
 
 
 class Uast2RandomWalk2BagTest(unittest.TestCase):
@@ -36,7 +37,7 @@ class Uast2RandomWalk2BagTest(unittest.TestCase):
         node = self.uast_random_walk2bag.uast2walks._extract_node(node=root, parent=parent)
         starting_nodes.append(node)
 
-        for ch in root.children:
+        for ch in iterate_children(root.children):
             node.children.append(self._prepare_starting_nodes(
                 ch, parent=node, starting_nodes=starting_nodes))
 

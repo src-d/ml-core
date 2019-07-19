@@ -1,21 +1,22 @@
 from collections import defaultdict, deque
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser, TokenParser
 from sourced.ml.core.algorithms.uast_to_bag import Uast2BagBase
 from sourced.ml.core.utils import bblfsh_roles
+from sourced.ml.core.utils.bblfsh import iterate_children
 
 
 def uast2sequence(root):
     sequence = []
     nodes = defaultdict(deque)
     stack = [root]
-    nodes[id(root)].extend(root.children)
+    nodes[id(root)].extend(iterate_children(root.children))
     while stack:
         if nodes[id(stack[-1])]:
             child = nodes[id(stack[-1])].popleft()
-            nodes[id(child)].extend(child.children)
+            nodes[id(child)].extend(iterate_children(child.children))
             stack.append(child)
         else:
             sequence.append(stack.pop())

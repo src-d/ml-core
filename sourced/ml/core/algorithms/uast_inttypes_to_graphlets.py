@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from sourced.ml.core.algorithms.uast_ids_to_bag import Uast2BagBase
 from sourced.ml.core.algorithms.uast_struct_to_bag import Node
+from sourced.ml.core.utils.bblfsh import iterate_children
 
 
 class Uast2GraphletBag(Uast2BagBase):
@@ -24,9 +25,10 @@ class Uast2GraphletBag(Uast2BagBase):
         stack = [(root, uast)]
         while stack:
             parent, parent_uast = stack.pop()
-            children_nodes = [self._extract_node(child, parent) for child in parent_uast.children]
+            children_nodes = [self._extract_node(child, parent) for child in
+                              iterate_children(parent_uast.children)]
             parent.children = children_nodes
-            stack.extend(zip(children_nodes, parent_uast.children))
+            stack.extend(zip(children_nodes, iterate_children(parent_uast.children)))
             yield parent
 
     def node2key(self, node):
