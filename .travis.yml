@@ -1,6 +1,6 @@
 language: python
 sudo: true
-dist: xenial
+dist: bionic
 services:
   - docker
 cache: pip
@@ -32,11 +32,6 @@ matrix:
       install:
         - pip install -r requirements-lint.txt
     - stage: test
-      name: "Test Python 3.5"
-      python: 3.5
-      script: *_coverage
-      install: *_install
-    - stage: test
       name: "Test Python 3.6"
       python: 3.6
       script: *_coverage
@@ -49,6 +44,19 @@ matrix:
       after_success:
         - codecov
     - stage: test
+        name: "Test Python 3.8"
+        python: 3.8
+        script: *_coverage
+        install:
+          # install without tensorflow because it is unsupported
+          - travis_retry make bblfsh-start
+          - pip install --upgrade pip cython codecov
+          - ML_CORE_SETUP_INCLUDE_TESTS=1 pip install .
+          - cd $(pip show sourced.ml.core|grep Location|cut -d' ' -f2)/sourced/ml/core
+          - find . -wholename "*/tests/*" -type d -exec chmod 555 {} \;
+        after_success:
+        - codecov
+    - stage: test
       name: "Tests inside docker"
       script:
         - make docker-build VERSION=test
@@ -57,7 +65,7 @@ matrix:
         - travis_retry make bblfsh-start
     - stage: deploy
       name: "Upload package to Pypi"
-      python: 3.5
+      python: 3.6
       install:
         - pip3 install --upgrade pip
         - pip3 install twine pyopenssl
@@ -72,7 +80,7 @@ matrix:
         on:
           tags: true
     - name: "Push image to Docker Hub"
-      python: 3.5
+      python: 3.6
       stage: deploy
       script:
         - DOCKER_PUSH_LATEST=true make docker-push

@@ -1,6 +1,6 @@
 from typing import Iterable, Tuple
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser
 from sourced.ml.core.algorithms.uast_id_distance import (Uast2IdDistance, Uast2IdLineDistance,

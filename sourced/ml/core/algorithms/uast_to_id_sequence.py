@@ -1,6 +1,6 @@
 from typing import Iterable
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.uast_id_distance import Uast2IdLineDistance
 

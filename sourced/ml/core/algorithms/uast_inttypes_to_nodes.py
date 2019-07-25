@@ -1,6 +1,6 @@
 from typing import Iterable, Tuple, Union
 
-from bblfsh import Node
+import bblfsh.compat as bblfsh
 import numpy
 
 from sourced.ml.core.algorithms.uast_to_bag import Uast2BagThroughSingleScan
@@ -15,7 +15,7 @@ class Uast2QuantizedChildren(Uast2BagThroughSingleScan):
         self.npartitions = npartitions
         self.levels = {}
 
-    def node2key(self, node: Node) -> Union[str, Tuple[str, int]]:
+    def node2key(self, node: bblfsh.Node) -> Union[str, Tuple[str, int]]:
         """
         Return the key for a given Node.
 

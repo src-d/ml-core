@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 
-import bblfsh
+import bblfsh.compat as bblfsh
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser, TokenParser
 from sourced.ml.core.algorithms.uast_to_bag import Uast2BagBase
