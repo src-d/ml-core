@@ -2,6 +2,7 @@ import pickle
 import unittest
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser, TokenParser
+from sourced.ml.core.tests import has_tensorflow
 
 
 class TokenParserTests(unittest.TestCase):
@@ -254,11 +255,14 @@ class TokenParserTests(unittest.TestCase):
 
 
 class NNTokenParserTests(unittest.TestCase):
+
+    @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def setUp(self):
         self.tp = TokenParser(stem_threshold=4, max_token_length=20,
                               attach_upper=False, use_nn=True)
         self.tp._single_shot = False
 
+    @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
     def test_process_token(self):
         self.tp.max_token_length = 100
 
