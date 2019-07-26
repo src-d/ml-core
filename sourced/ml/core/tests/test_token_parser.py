@@ -256,7 +256,7 @@ class TokenParserTests(unittest.TestCase):
 class NNTokenParserTests(unittest.TestCase):
     def setUp(self):
         self.tp = TokenParser(stem_threshold=4, max_token_length=20,
-                              attach_upper=False, nn_model="default")
+                              attach_upper=False, use_nn=True)
         self.tp._single_shot = False
 
     def test_process_token(self):
@@ -273,30 +273,30 @@ class NNTokenParserTests(unittest.TestCase):
             ("CAPS_CONST", ["caps", "const"]),
             ("_something_SILLY_", ["someth", "silli"]),
             ("blink182", ["blink"]),
-            ("FooBar100500Bingo", ["foo", "bar", "bingo"]),
+            ("FooBar100500Bingo", ["foobar", "bingo"]),
             ("Man45var", ["man", "var"]),
             ("method_name", ["method", "name"]),
             ("Method_Name", ["method", "name"]),
             ("101dalms", ["dalm"]),
             ("101_dalms", ["dalm"]),
             ("101_DalmsBug", ["dalmsbug"]),
-            ("101_Dalms45Bug7", ["dalmsbug"]),
+            ("101_Dalms45Bug7", ["dalm", "bug"]),
             ("wdSize", ["wd", "size"]),
             ("Glint", ["glint"]),
-            ("foo_BAR", ["foo","bar"]),
+            ("foo_BAR", ["foo", "bar"]),
             ("sourced.ml.algorithms.uast_ids_to_bag",
-             ["sourc", "d","ml", "algorithm", "uast", "ids", "to", "bag"]),
+             ["sourc", "d", "ml", "algorithm", "uast", "ids", "to", "bag"]),
             ("WORSTnameYOUcanIMAGINE", ["worst", "name", "you", "can", "imagin"]),
             # Another bad example. Parser failed to parse it correctly
             ("SmallIdsToFoOo", ["small", "ids", "to", "fooo"]),
             ("SmallIdFooo", ["small", "id", "foo", "o"]),
-            ("ONE_M0re_.__badId.example", ["one", "mre","badid", "exampl"]),
+            ("ONE_M0re_.__badId.example", ["one", "m", "re", "badid", "exampl"]),
             ("never_use_Such__varsableNames", ["never", "use", "such", "varsabl", "name"]),
-            ("a.b.c.d", ["a","b","c","d"]),
-            ("A.b.Cd.E", ["a","b","cd","e"]),
-            ("looong_sh_loooong_sh", ["looong","sh","loooong","sh"]),
-            ("sh_sh_sh_sh", ["sh","sh","sh","sh"]),
-            ("loooong_loooong_loooong", ["loooong","loooong","loooong"]),
+            ("a.b.c.d", ["a", "b", "c", "d"]),
+            ("A.b.Cd.E", ["a", "b", "cd", "e"]),
+            ("looong_sh_loooong_sh", ["looong", "sh", "loooong", "sh"]),
+            ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
         ]
 
         for token, correct in tokens:
