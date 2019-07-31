@@ -1,6 +1,6 @@
 language: python
 sudo: true
-dist: xenial
+dist: bionic
 services:
   - docker
 cache: pip
@@ -52,7 +52,7 @@ matrix:
         - travis_retry make bblfsh-start
     - stage: deploy
       name: "Upload package to Pypi"
-      python: 3.5
+      python: 3.6
       install:
         - pip3 install --upgrade pip
         - pip3 install twine pyopenssl
@@ -67,7 +67,7 @@ matrix:
         on:
           tags: true
     - name: "Push image to Docker Hub"
-      python: 3.5
+      python: 3.6
       stage: deploy
       script:
         - DOCKER_PUSH_LATEST=true make docker-push
