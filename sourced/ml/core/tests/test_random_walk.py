@@ -10,7 +10,7 @@ from sourced.ml.core.tests import models
 class RandomWalkTests(unittest.TestCase):
     def setUp(self):
         self.bblfsh = bblfsh.BblfshClient("localhost:9432")
-        self.uast = self.bblfsh.parse(models.SOURCE_PY).uast
+        self.uast = self.bblfsh.parse(models.SOURCE_PY, mode=bblfsh.Modes.ANNOTATED).uast
         self.uast2walk = Uast2RandomWalks(p_explore_neighborhood=0.5,
                                           q_leave_neighborhood=0.5,
                                           n_walks=5,
