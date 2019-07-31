@@ -1,6 +1,6 @@
 import unittest
 
-from bblfsh import BblfshClient
+from bblfsh import BblfshClient, Modes
 
 from sourced.ml.core.algorithms import UastRandomWalk2Bag, UastSeq2Bag
 from sourced.ml.core.tests.models import SOURCE_PY
@@ -9,7 +9,7 @@ from sourced.ml.core.tests.models import SOURCE_PY
 class Uast2RandomWalk2BagTest(unittest.TestCase):
     def setUp(self):
         self.uast_random_walk2bag = UastRandomWalk2Bag(seq_len=[2, 3])
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
 
     def test_uast_to_bag(self):
         bag = self.uast_random_walk2bag(self.uast)
@@ -44,7 +44,7 @@ class Uast2RandomWalk2BagTest(unittest.TestCase):
 class UastSeq2BagTest(unittest.TestCase):
     def setUp(self):
         self.uast_seq2bag = UastSeq2Bag(seq_len=[2, 3])
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
 
     def test_uast_to_bag(self):
         bag = self.uast_seq2bag(self.uast)

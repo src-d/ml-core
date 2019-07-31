@@ -32,11 +32,6 @@ matrix:
       install:
         - pip install -r requirements-lint.txt
     - stage: test
-      name: "Test Python 3.5"
-      python: 3.5
-      script: *_coverage
-      install: *_install
-    - stage: test
       name: "Test Python 3.6"
       python: 3.6
       script: *_coverage

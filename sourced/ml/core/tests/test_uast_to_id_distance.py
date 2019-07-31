@@ -1,6 +1,6 @@
 import unittest
 
-from bblfsh import BblfshClient
+from bblfsh import BblfshClient, Modes
 
 from sourced.ml.core.algorithms import Uast2IdLineDistance, Uast2IdTreeDistance
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser
@@ -11,7 +11,7 @@ class Uast2IdTreeDistanceTest(unittest.TestCase):
     def setUp(self):
         self.uast2role_id_pairs = Uast2IdTreeDistance(token_parser=NoopTokenParser(),
                                                       max_distance=4)
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
         self.maxDiff = None
 
     def test_result(self):
@@ -56,7 +56,7 @@ class Uast2IdLineDistanceTest(unittest.TestCase):
     def setUp(self):
         self.uast2role_id_pairs = Uast2IdLineDistance(token_parser=NoopTokenParser(),
                                                       max_distance=3)
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
         self.maxDiff = None
 
     def test_result(self):

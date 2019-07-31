@@ -9,8 +9,8 @@ sourcedml = SourceFileLoader("sourced-ml-core", "./sourced/ml/core/__init__.py")
 with io.open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-tf_requires = ["tensorflow>=1.0,<2.0"]
-tf_gpu_requires = ["tensorflow-gpu>=1.0,<2.0"]
+tf_requires = ["tensorflow>=1.0,<1.14"]
+tf_gpu_requires = ["tensorflow-gpu>=1.0,<1.14"]
 exclude_packages = (
     ("sourced.ml.core.tests", "sourced.ml.core.tests.source")
     if not os.getenv("ML_CORE_SETUP_INCLUDE_TESTS", False)
@@ -45,7 +45,7 @@ setup(
     ],
     install_requires=[
         "PyStemmer>=1.3,<2.0",
-        "bblfsh>=2.12.7,<3.0",
+        "bblfsh>=3.1.0,<4.0",
         "modelforge>=0.12.1,<0.13",
         "pygments>=2.2.0,<3.0",
         "keras>=2.0,<3.0",

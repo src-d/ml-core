@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This library is the foundation for [MLonCode](https://github.com/src-d/awesome-machine-learning-on-source-code) research and development. 
-It contains commonly used algorithms and tools to process the code-related data, such as [Babelfish's UASTs](docs.sourced.tech/babelfish), plain code text and other.
+It contains commonly used algorithms and tools to process the code-related data, such as [Babelfish's UASTs](https://docs.sourced.tech/babelfish/uast), plain code text and other.
 
 ## Contributions
 

@@ -1,6 +1,6 @@
 import unittest
 
-from bblfsh import BblfshClient
+from bblfsh import BblfshClient, Modes
 
 from sourced.ml.core.algorithms import Uast2QuantizedChildren
 from sourced.ml.core.tests.models import SOURCE_PY
@@ -9,7 +9,7 @@ from sourced.ml.core.tests.models import SOURCE_PY
 class Uast2NodesBagTest(unittest.TestCase):
     def setUp(self):
         self.nodes_bag_extractor = Uast2QuantizedChildren(npartitions=3)
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
 
     def test_uast_to_bag(self):
         bag = self.nodes_bag_extractor(self.uast)

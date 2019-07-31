@@ -1,6 +1,6 @@
 import unittest
 
-from bblfsh import BblfshClient
+from bblfsh import BblfshClient, Modes
 
 from sourced.ml.core.algorithms import Uast2IdSequence
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser
@@ -10,7 +10,7 @@ from sourced.ml.core.tests.models import SOURCE_PY
 class Uast2IdSequenceTest(unittest.TestCase):
     def setUp(self):
         self.uast2id_sequence = Uast2IdSequence(token_parser=NoopTokenParser())
-        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY).uast
+        self.uast = BblfshClient("0.0.0.0:9432").parse(SOURCE_PY, mode=Modes.ANNOTATED).uast
 
     def test_result(self):
         correct = ["sys", "setup_logging", "modelforge.logs", "utmain", "modules", "sys",
