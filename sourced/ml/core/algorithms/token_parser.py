@@ -45,7 +45,7 @@ class TokenParser:
     def __init__(self, stem_threshold=STEM_THRESHOLD, max_token_length=MAX_TOKEN_LENGTH,
                  min_split_length=MIN_SPLIT_LENGTH, single_shot=DEFAULT_SINGLE_SHOT,
                  save_token_style=SAVE_TOKEN_STYLE, attach_upper=ATTACH_UPPER, use_nn=USE_NN,
-                 nn_model=NN_MODEL):
+                 nn_model=None):
         self._stemmer = Stemmer.Stemmer("english")
         self._stemmer.maxCacheSize = 0
         self._stem_threshold = stem_threshold
@@ -55,10 +55,15 @@ class TokenParser:
         self._save_token_style = save_token_style
         self._attach_upper = attach_upper
         self._nn_model = nn_model
-        self._use_nn = use_nn
-        self._init_nn()
+        self._id_splitter_nn = None
+        if use_nn or self._nn_model is not None:
+            self._init_nn()
         if self._save_token_style and not self._single_shot:
             raise ValueError("Only one of `single_shot`/`save_token_style` should be True")
+
+    @property
+    def use_nn(self):
+        return self._id_splitter_nn is not None
 
     @property
     def stem_threshold(self):
@@ -89,9 +94,8 @@ class TokenParser:
         return self._nn_model
 
     def _init_nn(self):
-        if self._use_nn:
-            from sourced.ml.core.models.id_splitter import IdentifierSplitterBiLSTM
-            self._id_splitter_nn = IdentifierSplitterBiLSTM().load(self._nn_model)
+        from sourced.ml.core.models.id_splitter import IdentifierSplitterBiLSTM
+        self._id_splitter_nn = IdentifierSplitterBiLSTM().load(source=self._nn_model)
 
     @property
     def min_split_length(self):
@@ -192,7 +196,7 @@ class TokenParser:
         """
         Splits a single identifier.
         """
-        if self._use_nn:
+        if self.use_nn:
             splitted_token = self.__pre_split_token(token)
             for subtoken in self._id_splitter_nn.split(splitted_token):
                 for splitted_subtoken in subtoken:
@@ -205,7 +209,7 @@ class TokenParser:
         """
         Splits a batch of identifiers.
         """
-        if self._use_nn:
+        if self.use_nn:
             splitted_tokens = []
             for token in tokens:
                 splitted_token = self.__pre_split_token(token)
