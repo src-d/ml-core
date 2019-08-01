@@ -45,7 +45,7 @@ setup(
     ],
     install_requires=[
         "PyStemmer>=1.3,<2.0",
-        "bblfsh>=2.12.7,<3.0",
+        "bblfsh>=3.1.0,<4.0",
         "modelforge>=0.14.1",
         "pygments>=2.2.0,<3.0",
         "keras>=2.0,<3.0",

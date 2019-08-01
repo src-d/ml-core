@@ -33,7 +33,7 @@ class TokenParser:
     # if True we have only ["sourc", "algorithm"].
     # if you do not want to filter small tokens set min_split_length=1.
     SAVE_TOKEN_STYLE = False  # whether yield metadata that can be used to reconstruct
-    # initial identifier
+    # the initial identifier
 
     # default nn model modelforge UUID to load when using neural network splitter
     NN_MODEL = "522bdd11-d1fa-49dd-9e51-87c529283418"
