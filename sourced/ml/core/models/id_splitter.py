@@ -128,7 +128,6 @@ class IdentifierSplitterBiLSTM(Model):
         feats, clean_ids = self.prepare_input(identifiers)
         output = self._model.predict(feats, batch_size=self._batch_size)
         output = numpy.round(output)[:, :, 0]
-        split_ids = []
         for clean_id, id_output in zip(clean_ids, output):
             identifier_tokens = []
             token = ""
@@ -138,5 +137,4 @@ class IdentifierSplitterBiLSTM(Model):
                     token = ""
                 token += char
             identifier_tokens.append(token)
-            split_ids.append(identifier_tokens)
-        return split_ids
+            yield identifier_tokens

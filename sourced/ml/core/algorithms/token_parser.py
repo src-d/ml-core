@@ -32,15 +32,20 @@ class TokenParser:
     # Example: 'sourced.ml.algorithms' -> ["sourc", "sourcedml", "algorithm", "mlalgorithm"].
     # if True we have only ["sourc", "algorithm"].
     # if you do not want to filter small tokens set min_split_length=1.
-    SAVE_TOKEN_STYLE = False  # whether yield metadata that can be used to reconstruct initial
-    # identifier.
+    SAVE_TOKEN_STYLE = False  # whether yield metadata that can be used to reconstruct
+    # the initial identifier
+
+    # default nn model modelforge UUID to load when using neural network splitter
+    NN_MODEL = "522bdd11-d1fa-49dd-9e51-87c529283418"
+    USE_NN = False  # Wether to use or not Neural Network-based splitter
     ATTACH_UPPER = True  # True to attach the last of several uppercase letters in a row to
     # the next token. Example: 'HTMLResponse' -> ["html", "response"] if True,
     # 'HTMLResponse' -> ["htmlr", "esponse"] if False.
 
     def __init__(self, stem_threshold=STEM_THRESHOLD, max_token_length=MAX_TOKEN_LENGTH,
                  min_split_length=MIN_SPLIT_LENGTH, single_shot=DEFAULT_SINGLE_SHOT,
-                 save_token_style=SAVE_TOKEN_STYLE, attach_upper=ATTACH_UPPER):
+                 save_token_style=SAVE_TOKEN_STYLE, attach_upper=ATTACH_UPPER, use_nn=USE_NN,
+                 nn_model=None):
         self._stemmer = Stemmer.Stemmer("english")
         self._stemmer.maxCacheSize = 0
         self._stem_threshold = stem_threshold
@@ -49,8 +54,15 @@ class TokenParser:
         self._single_shot = single_shot
         self._save_token_style = save_token_style
         self._attach_upper = attach_upper
+        self._id_splitter_nn = None
+        if use_nn:
+            self._init_nn(nn_model)
         if self._save_token_style and not self._single_shot:
             raise ValueError("Only one of `single_shot`/`save_token_style` should be True")
+
+    @property
+    def use_nn(self):
+        return self._id_splitter_nn is not None
 
     @property
     def stem_threshold(self):
@@ -76,6 +88,10 @@ class TokenParser:
             raise ValueError("max_token_length must be greater than 0 - got %d" % value)
         self._max_token_length = value
 
+    def _init_nn(self, nn_model):
+        from sourced.ml.core.models.id_splitter import IdentifierSplitterBiLSTM
+        self._id_splitter_nn = IdentifierSplitterBiLSTM().load(source=nn_model)
+
     @property
     def min_split_length(self):
         return self._min_split_length
@@ -100,7 +116,7 @@ class TokenParser:
             return word
         return self._stemmer.stemWord(word)
 
-    def split(self, token):
+    def _split(self, token):
         token = token.strip()[:self.max_token_length]
 
         def meta_decorator(func):
@@ -129,9 +145,9 @@ class TokenParser:
                     yield ret.prev_p + r
                     ret.prev_p = ""
             elif not self._single_shot:
-                    ret.prev_p = r
-                    yield ret.last_subtoken + r
-                    ret.last_subtoken = ""
+                ret.prev_p = r
+                yield ret.last_subtoken + r
+                ret.last_subtoken = ""
         ret.prev_p = ""
         ret.last_subtoken = ""
 
@@ -165,6 +181,36 @@ class TokenParser:
             last = part[start:]
             if last:
                 yield from ret(last)
+
+    def __pre_split_token(self, token: str) -> [str]:
+        """Split a token by non-alphanumeric characters"""
+        splits = re.split(self.NAME_BREAKUP_RE, token)
+        return [splitted_token for splitted_token in splits if splitted_token != ""]
+
+    def split(self, token: str) -> [str]:
+        """
+        Splits a single identifier.
+        """
+        if self.use_nn:
+            splitted_token = self.__pre_split_token(token)
+            for subtoken in self._id_splitter_nn.split(splitted_token):
+                for splitted_subtoken in subtoken:
+                    if splitted_subtoken != "":
+                        yield splitted_subtoken
+        else:
+            yield from self._split(token)
+
+    def split_batch(self, tokens: [str]) -> [[str]]:
+        """
+        Splits a batch of identifiers.
+        """
+        if self.use_nn:
+            splitted_tokens = []
+            for token in tokens:
+                splitted_token = self.__pre_split_token(token)
+                splitted_tokens.append(splitted_token)
+            return self._id_splitter_nn.split(tokens)
+        return map(self._split, tokens)
 
     @staticmethod
     def reconstruct(tokens):

@@ -2,6 +2,7 @@ import pickle
 import unittest
 
 from sourced.ml.core.algorithms.token_parser import NoopTokenParser, TokenParser
+from sourced.ml.core.tests import has_tensorflow
 
 
 class TokenParserTests(unittest.TestCase):
@@ -251,6 +252,60 @@ class TokenParserTests(unittest.TestCase):
     def test_pickle(self):
         tp = pickle.loads(pickle.dumps(self.tp))
         self.assertEqual(tp.stem("embedding"), "embed")
+
+
+class NNTokenParserTests(unittest.TestCase):
+
+    @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
+    def setUp(self):
+        self.tp = TokenParser(stem_threshold=4, max_token_length=20,
+                              attach_upper=False, use_nn=True)
+        self.tp._single_shot = False
+
+    @unittest.skipIf(not has_tensorflow(), "Tensorflow is not installed.")
+    def test_process_token(self):
+        self.tp.max_token_length = 100
+
+        tokens = [
+            ("ONLYCAPS", ["only", "caps"]),
+            ("nocaps", ["no", "caps"]),
+            ("UpperCamelCase", ["upper", "camel", "case"]),
+            ("camelCase", ["camel", "case"]),
+            ("FRAPScase", ["frap", "case"]),
+            ("SQLThing", ["sql", "thing"]),
+            ("_Astra", ["astra"]),
+            ("CAPS_CONST", ["caps", "const"]),
+            ("_something_SILLY_", ["someth", "silli"]),
+            ("blink182", ["blink"]),
+            ("FooBar100500Bingo", ["foobar", "bingo"]),
+            ("Man45var", ["man", "var"]),
+            ("method_name", ["method", "name"]),
+            ("Method_Name", ["method", "name"]),
+            ("101dalms", ["dalm"]),
+            ("101_dalms", ["dalm"]),
+            ("101_DalmsBug", ["dalmsbug"]),
+            ("101_Dalms45Bug7", ["dalm", "bug"]),
+            ("wdSize", ["wd", "size"]),
+            ("Glint", ["glint"]),
+            ("foo_BAR", ["foo", "bar"]),
+            ("sourced.ml.algorithms.uast_ids_to_bag",
+             ["sourc", "d", "ml", "algorithm", "uast", "ids", "to", "bag"]),
+            ("WORSTnameYOUcanIMAGINE", ["worst", "name", "you", "can", "imagin"]),
+            # Another bad example. Parser failed to parse it correctly
+            ("SmallIdsToFoOo", ["small", "ids", "to", "fooo"]),
+            ("SmallIdFooo", ["small", "id", "foo", "o"]),
+            ("ONE_M0re_.__badId.example", ["one", "m", "re", "badid", "exampl"]),
+            ("never_use_Such__varsableNames", ["never", "use", "such", "varsabl", "name"]),
+            ("a.b.c.d", ["a", "b", "c", "d"]),
+            ("A.b.Cd.E", ["a", "b", "cd", "e"]),
+            ("looong_sh_loooong_sh", ["looong", "sh", "loooong", "sh"]),
+            ("sh_sh_sh_sh", ["sh", "sh", "sh", "sh"]),
+            ("loooong_loooong_loooong", ["loooong", "loooong", "loooong"]),
+        ]
+
+        for token, correct in tokens:
+            res = list(self.tp.process_token(token))
+            self.assertEqual(res, correct)
 
 
 class NoopTokenParserTests(unittest.TestCase):
