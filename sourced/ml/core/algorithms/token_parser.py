@@ -54,10 +54,9 @@ class TokenParser:
         self._single_shot = single_shot
         self._save_token_style = save_token_style
         self._attach_upper = attach_upper
-        self._nn_model = nn_model
         self._id_splitter_nn = None
-        if use_nn or self._nn_model is not None:
-            self._init_nn()
+        if use_nn:
+            self._init_nn(nn_model)
         if self._save_token_style and not self._single_shot:
             raise ValueError("Only one of `single_shot`/`save_token_style` should be True")
 
@@ -89,13 +88,9 @@ class TokenParser:
             raise ValueError("max_token_length must be greater than 0 - got %d" % value)
         self._max_token_length = value
 
-    @property
-    def nn_model(self):
-        return self._nn_model
-
-    def _init_nn(self):
+    def _init_nn(self, nn_model):
         from sourced.ml.core.models.id_splitter import IdentifierSplitterBiLSTM
-        self._id_splitter_nn = IdentifierSplitterBiLSTM().load(source=self._nn_model)
+        self._id_splitter_nn = IdentifierSplitterBiLSTM().load(source=nn_model)
 
     @property
     def min_split_length(self):
