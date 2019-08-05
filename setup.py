@@ -9,14 +9,16 @@ sourcedml = SourceFileLoader("sourced-ml-core", "./sourced/ml/core/__init__.py")
 with io.open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
+include_tests = os.getenv("ML_CORE_SETUP_INCLUDE_TESTS", False)
+exclude_packages = (("sourced.ml.core.tests", "sourced.ml.core.tests.source")
+                    if not include_tests else ())
+
 tf_requires = ["tensorflow>=1.0,<1.14"]
 tf_gpu_requires = ["tensorflow-gpu>=1.0,<1.14"]
-exclude_packages = (
-    ("sourced.ml.core.tests", "sourced.ml.core.tests.source")
-    if not os.getenv("ML_CORE_SETUP_INCLUDE_TESTS", False)
-    else ()
-)
-
+package_data = {"": ["LICENSE.md", "README.md"]}
+if include_tests:
+    test_data_dirs = ["./asdf/*.asdf", "./swivel/*", "identifiers.csv.tar.gz"]
+    package_data["sourced.ml.core.tests"] = test_data_dirs
 
 setup(
     name="sourced-ml-core",
@@ -54,10 +56,7 @@ setup(
     ],
     extras_require={"tf": tf_requires, "tf_gpu": tf_gpu_requires},
     tests_require=["docker>=3.6.0,<4.0"],
-    package_data={
-        "": ["LICENSE.md", "README.md"],
-        "sourced.ml.core.tests": ["./asdf/*.asdf", "./swivel/*", "identifiers.csv.tar.gz"],
-    },
+    package_data=package_data,
     python_requires=">=3.5",
     classifiers=[
         "Development Status :: 3 - Alpha",
