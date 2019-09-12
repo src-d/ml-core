@@ -78,7 +78,7 @@ class IdentifierSplitterBiLSTM(Model):
             "mapping": self._mapping,
             "maxlen": self._maxlen,
             "padding": self._padding,
-            }
+        }
 
     def _load_tree(self, tree: dict) -> None:
         model = keras.models.Model.from_config(tree["config"])
@@ -95,7 +95,7 @@ class IdentifierSplitterBiLSTM(Model):
         clean_id = "".join(char for char in identifier.lower() if char in self._mapping)
         if len(clean_id) > self._maxlen:
             clean_id = clean_id[:self._maxlen]
-        self._log.debug("Preprocessed identifier: %s : %s" % (identifier, clean_id))
+        self._log.debug("Preprocessed identifier: %s : %s", identifier, clean_id)
         return numpy.array([self._mapping[c] for c in clean_id]), clean_id
 
     def prepare_input(self, identifiers: Sequence[str]) -> Tuple[numpy.array, List[str]]:

@@ -25,27 +25,32 @@ class TokenParser:
     # NAME_BREAKUP_KEEP_DELIMITERS_RE.split(token) -> ['Var', '_', 'WithStrangeNAMING', '__',
     #                                                  'very', '_', 'strange']
     # NAME_BREAKUP_RE.split(token) -> ['Var', 'WithStrangeNAMING', 'very', 'strange']
-    STEM_THRESHOLD = 6  # We do not stem split parts shorter than or equal to this size.
-    MAX_TOKEN_LENGTH = 256  # We cut identifiers longer than this value.
-    MIN_SPLIT_LENGTH = 3  # We do not split source code identifiers shorter than this value.
-    DEFAULT_SINGLE_SHOT = False  # True if we do not want to join small identifiers to next one.
-    # Example: 'sourced.ml.algorithms' -> ["sourc", "sourcedml", "algorithm", "mlalgorithm"].
-    # if True we have only ["sourc", "algorithm"].
-    # if you do not want to filter small tokens set min_split_length=1.
-    SAVE_TOKEN_STYLE = False  # whether yield metadata that can be used to reconstruct
-    # the initial identifier
-
-    # default nn model modelforge UUID to load when using neural network splitter
-    NN_MODEL = "522bdd11-d1fa-49dd-9e51-87c529283418"
-    USE_NN = False  # Wether to use or not Neural Network-based splitter
-    ATTACH_UPPER = True  # True to attach the last of several uppercase letters in a row to
-    # the next token. Example: 'HTMLResponse' -> ["html", "response"] if True,
-    # 'HTMLResponse' -> ["htmlr", "esponse"] if False.
+    STEM_THRESHOLD = 6
+    MAX_TOKEN_LENGTH = 256
+    MIN_SPLIT_LENGTH = 3
 
     def __init__(self, stem_threshold=STEM_THRESHOLD, max_token_length=MAX_TOKEN_LENGTH,
-                 min_split_length=MIN_SPLIT_LENGTH, single_shot=DEFAULT_SINGLE_SHOT,
-                 save_token_style=SAVE_TOKEN_STYLE, attach_upper=ATTACH_UPPER, use_nn=USE_NN,
-                 nn_model=None):
+                 min_split_length=MIN_SPLIT_LENGTH, single_shot=False, save_token_style=False,
+                 attach_upper=True, use_nn=False, nn_model=None):
+        """
+        Initialize a new TokenSplitter.
+
+        :param stem_threshold: We do not stem split parts shorter than or equal to this size.
+        :param max_token_length: We cut identifiers longer than this value.
+        :param min_split_length: We do not split source code identifiers shorter than this value. \
+                                 If you do not want to filter small tokens set min_split_length=1.
+        :param single_shot: True if we do not want to join small identifiers to next one. \
+            Example: 'sourced.ml.algorithms' → ["sourc", "sourcedml", "algorithm", "mlalgorithm"].\
+            If True we have only ["sourc", "algorithm"]. \
+        :param save_token_style: value indicating whether yield metadata that can be used to \
+                                 reconstruct the initial identifier.
+        :param attach_upper: True to attach the last of several uppercase letters in a row to \
+                      the next token. Example: 'HTMLResponse' -> ["html", "response"] if True, \
+                      'HTMLResponse' -> ["htmlr", "esponse"] if False.
+        :param use_nn: value indicating whether to use the Neural Network-based splitter instead \
+                       of the heuristics.
+        :param nn_model: IdentifierSplitterBiLSTM model UUID to load. None means the most recent.
+        """
         self._stemmer = Stemmer.Stemmer("english")
         self._stemmer.maxCacheSize = 0
         self._stem_threshold = stem_threshold
