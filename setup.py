@@ -48,7 +48,7 @@ setup(
     install_requires=[
         "PyStemmer>=1.3,<2.0",
         "bblfsh>=3.1.0,<5.0",
-        "modelforge>=0.14.1",
+        "modelforge>=0.15.0",
         "pygments>=2.2.0,<3.0",
         "keras>=2.0,<3.0",
         "scikit-learn>=0.21.1,<1.0",
